@@ -42,6 +42,11 @@ public class Parser {
 		return maze;
 	}
 	
+	/**
+	 * convert the maze matrix back into a string
+	 * @param maze
+	 * @return string format maze
+	 */
 	public static String toString(ArrayList<ArrayList<Integer>> maze) {
 		String mazeString = "";
 		for (ArrayList<Integer> row: maze) {
