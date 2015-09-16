@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 import entities.Parser;
+import searchaglorithms.DFSSearch;
 
 
 
@@ -16,6 +17,12 @@ public class MazeSearch {
                 
                 // Displaying matrix
                 //Parser.displayBeautifulMatrix(matrix);
+                
+                
+                //DFSSearch
+                DFSSearch dfsSearch = new DFSSearch(matrix);
+                //Search and displays the solution
+                dfsSearch.Search();
 
 	}
 }
