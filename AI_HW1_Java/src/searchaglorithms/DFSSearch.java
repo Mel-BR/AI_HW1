@@ -42,7 +42,6 @@ public class DFSSearch {
                 if (this.maze[i][j]  == START)
                 {
                     lifo.add(new Node(null,i,j));
-                    //System.out.println("Start point:"+i+" "+j);
                 }
             }
         }
@@ -52,9 +51,7 @@ public class DFSSearch {
             Node currentNode = lifo.removeLast();
             int x = currentNode.getX();
             int y = currentNode.getY();
-            System.out.println(maze[currentNode.getX()][currentNode.getY()]);
             if (maze[currentNode.getX()][currentNode.getY()] == FIN) {
-                System.out.println(currentNode.getX()+" "+currentNode.getY());
                 returnSolution(currentNode);
                 break;
             }
