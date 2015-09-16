@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class Parser {
 	
-	public static final Integer WALL = 100000000;
+	public static final Integer WALL = 1;
 	public static final Integer PATH = 0;
 	public static final Integer START = -2;
 	public static final Integer FIN = -1;
@@ -101,4 +101,68 @@ public class Parser {
 		
 		return row;
 	}
+        
+        /**
+	 * create a simple two-dimensional array from the double list
+	 * @param maze
+	 * @return two-dimensional array of integers
+	 */
+        public static int[][] getMatrix(ArrayList<ArrayList<Integer>> integers)
+        {
+            int[][] ret = new int[integers.size()][integers.get(0).size()];
+            for (int i=0; i < ret.length; i++)
+            {            
+                for (int j=0; j < ret[0].length; j++)
+                {
+                    ret[i][j] = integers.get(i).get(j).intValue();
+                }
+            }
+            return ret;
+        }
+        
+        /**
+	 * display the matrix with numbers
+	 * @param maze
+	 * @return string format maze
+	 */
+        public static void displayRawMatrix(int[][] m)
+        {
+                for(int i=0;i<m.length;i++)
+                {
+                        for(int j=0 ;j<m[0].length ;j++) {
+                            System.out.print(m[i][j]+" ");
+                        }
+                        System.out.print("\n");
+                }
+        }        
+        
+        /**
+	 * display the matrix with characters
+	 * @param maze
+	 * @return nothing
+	 */
+        public static void displayBeautifulMatrix(int[][] m)
+        {
+            String mazeString = "";
+            for(int i=0;i<m.length;i++)
+            {
+                for(int j=0 ;j<m[0].length ;j++) {
+                    char ch;
+                    if (m[i][j] == WALL)
+                        ch = '%';
+                    else if (m[i][j]  == PATH)
+                        ch = ' ';
+                    else if (m[i][j]  == START)
+                        ch = '.';
+                    else if (m[i][j]  == FIN)
+                        ch = 'P';
+                    else
+                        ch = '%';
+                    mazeString += ch;
+                }
+                mazeString += "\n";
+            }
+            System.out.println(mazeString);
+            
+        }
 }

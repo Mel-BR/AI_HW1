@@ -8,8 +8,14 @@ public class MazeSearch {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/bigMaze.txt");
-		System.out.println(Parser.toString(maze));
-	}
+		ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/mediumMaze.txt");
+		//System.out.println(Parser.toString(maze));
+                
+                //Creating a more simple structure to access and to change data
+                int[][] matrix = Parser.getMatrix(maze);
+                
+                // Displaying matrix
+                //Parser.displayBeautifulMatrix(matrix);
 
+	}
 }
