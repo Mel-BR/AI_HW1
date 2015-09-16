@@ -9,7 +9,7 @@ public class Node {
         this.parent = parent;
         this.x = x;
         this.y = y;
-        this.currentPathCost = currentPathCost;
+        this.currentPathCost = -1;
     }
     
     public Node getParent(){
