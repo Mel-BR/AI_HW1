@@ -9,10 +9,10 @@ import java.util.Scanner;
 
 public class Parser {
 	
-	public static final Integer WALL = 1;
-	public static final Integer PATH = 0;
-	public static final Integer START = -2;
-	public static final Integer FIN = -1;
+	public static final Integer WALL = -2; 
+	public static final Integer PATH = 2147483647;
+	public static final Integer START = -1;
+	public static final Integer FIN = PATH-1;
 	
 	/**
 	 * parses the maze txt file into an arraylist matrix of integers

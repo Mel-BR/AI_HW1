@@ -15,13 +15,13 @@ public class GreedySearch {
 	private PriorityQueue<Node> pq;
 	private int finX;
 	private int finY;
-	private int cost;
+	private int totalCost;
 	private int expands;
 
 
 	public GreedySearch(int[][] maze) {
 		this.maze = maze;
-		this.cost = 0;
+		this.totalCost = 0;
 		this.expands = 0;
 		this.solution = new int[maze.length][maze[0].length];
 		this.pq = new PriorityQueue<Node>();
@@ -44,7 +44,9 @@ public class GreedySearch {
 		for (int i = 0; i < x; i++) {
 			for (int j = 0; j < y; j++) {
 				if (this.maze[i][j] == START) {
-					this.pq.add(new Node(null, i, j, 0));
+					int h = heuristic(i, j);
+					int cost = 0;
+					this.pq.add(new Node(null, i, j, cost, h));
 				}
 				if (this.maze[i][j] == FIN) {
 					this.finX = j;
@@ -59,8 +61,8 @@ public class GreedySearch {
 	 * execute algorithm and create the solution maze matrix
 	 */
 	public void search() {
-		this.cost = 0;
-		this.expands = 1;
+		this.totalCost = 0;
+		this.expands = 0;
 		Node solNode = mazeSearch();
 		// backtrack from fin to start
 		while (solNode.getParent() != null) {
@@ -68,7 +70,7 @@ public class GreedySearch {
 			int y = solNode.getY();
 			this.solution[x][y] = START; // MARK THE SOLUTION PATH WITH THE START SYMBOL
 			solNode = solNode.getParent();
-			this.cost++;
+			this.totalCost++;
 		}
 	}
 	
@@ -80,7 +82,7 @@ public class GreedySearch {
         System.out.println("Solution:");
 		Parser.displayBeautifulMatrix(solution);
  
-        System.out.println("\n Cost : "+this.cost);       
+        System.out.println("\n Cost : "+this.totalCost);       
         System.out.println("\n Nodes expanded : "+ this.expands);
     }
 	
@@ -90,6 +92,7 @@ public class GreedySearch {
 	 */
 	private Node mazeSearch() {
 		Node currNode = this.pq.remove();
+		this.expands += 1;
 		// found solution if current node is the on FIN
 		if (this.solution[currNode.getX()][currNode.getY()] == FIN) {
 			return currNode;
@@ -119,18 +122,17 @@ public class GreedySearch {
 
 	
 	/**
-	 * create a new node and add queue if the adjacent x,y is not a wall
-	 * then make x,y into a wall
+	 * create a new node and add queue if the new node cost is less than the current cost
 	 * @param currNode
 	 * @param x
 	 * @param y
 	 */
 	private void checkAndAddNodeToList(Node currNode, int x, int y) {
-
-		if (this.maze[x][y] != WALL) {
-			this.pq.add(new Node(currNode, x, y, heuristic(x,y)));
-			this.maze[x][y] = WALL;
-			this.expands += 1;
+		int cost = 0; //currNode.getCurrentPathCost()+1;
+		int h = heuristic(x,y);
+		if (h+cost < this.maze[x][y]) {
+			this.pq.add(new Node(currNode, x, y, cost, h));
+			this.maze[x][y] = h+cost;
 		}
 	}
 
