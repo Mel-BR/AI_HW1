@@ -1,7 +1,8 @@
 import java.util.ArrayList;
 
-import entities.Parser;
 import searchaglorithms.DFSSearch;
+import searchaglorithms.GreedySearch;
+import entities.Parser;
 
 
 
@@ -23,6 +24,10 @@ public class MazeSearch {
                 DFSSearch dfsSearch = new DFSSearch(matrix);
                 //Search and displays the solution
                 dfsSearch.Search();
+                
+                GreedySearch greedySearch = new GreedySearch(matrix);
+                greedySearch.search();
+                greedySearch.printSolution();
 
 	}
 }
