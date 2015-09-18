@@ -1,4 +1,6 @@
 import entities.Node;
+
+import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -17,7 +19,8 @@ public class MazeSearch {
             
                 /* Parsing input */
 		// TODO Auto-generated method stub
-		ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/openMaze.txt");
+		URL url = MazeSearch.class.getClassLoader().getResource("openMaze.txt");
+		ArrayList<ArrayList<Integer>> maze = Parser.parse(url.getPath());
 		//System.out.println(Parser.toString(maze));
                 
                 //Creating a more simple structure to access and to change data
