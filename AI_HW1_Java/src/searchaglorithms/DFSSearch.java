@@ -6,7 +6,6 @@ import static entities.Parser.FIN;
 import static entities.Parser.PATH;
 import static entities.Parser.START;
 import static entities.Parser.WALL;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 
@@ -15,14 +14,15 @@ public class DFSSearch {
     private int[][] maze;
     private int[][] solution;
     private LinkedList<Node> lifo;
-    private LinkedList<Node> exploredNodes;
+    private int[][] exploredNodes;
+    private int expandedNodesCounts;
     
     
     public DFSSearch(int[][] maze) {
         this.maze = maze;
         this.solution = null;
         this.lifo = new LinkedList<Node>();
-        this.exploredNodes = new LinkedList<Node>();
+        this.expandedNodesCounts = 0;
     }
     
     /**
@@ -32,7 +32,7 @@ public class DFSSearch {
      */
     public void Search(){
         this.lifo.clear();
-        this.exploredNodes.clear();
+        this.exploredNodes = new int[maze.length][maze.length];
         
         //findind start node
         for(int i = 0 ; i < this.maze.length ; i++)
@@ -56,7 +56,7 @@ public class DFSSearch {
                 break;
             }
             else{
-                exploredNodes.add(currentNode);
+                this.exploredNodes[x][y] = 1;
                 //Add all adjacent nodes that are not WALLS to the list
                 //Left
                 checkAndAddNodeToList(currentNode, x-1,y);
@@ -93,27 +93,34 @@ public class DFSSearch {
             currentNode = currentNode.getParent();
         }
         
+        int pop=0;
+        for(int i=0; i<this.maze.length; i++)
+        {
+            for(int j=0; j<this.maze.length; j++){
+                pop+=this.exploredNodes[i][j];
+            }      
+        }
+        
         System.out.println("Solution:");
         Parser.displayBeautifulMatrix(solution);
         
         System.out.println("\n The cost is : "+cost);
         
-        System.out.println("\n The number of nodes extended is : "+ this.exploredNodes.size());
+        System.out.println("\n The number of nodes expanded is : "+ this.expandedNodesCounts+" and number of nodes analyzed is : "+pop);
         
      
     }
 
      /**
      * check if a node has already been visited
-     * @param node coord
+     * @param node 
+     * @param coord
      * @return boolean
      */    
     private boolean alreadyExplored(int x, int y){
         
-        for (Node node : this.exploredNodes) {
-            if (x == node.getX() && y == node.getY() ){
-                return true;
-            }
+        if(this.exploredNodes[x][y] == 1) {
+            return true;
         }
         return false;
     }
@@ -129,6 +136,7 @@ public class DFSSearch {
             if(!alreadyExplored(x,y))
             {
                 lifo.add(new Node(currentNode,x,y));
+                this.expandedNodesCounts++;
             }   
         }
     }
