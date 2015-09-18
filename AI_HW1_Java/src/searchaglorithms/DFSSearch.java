@@ -3,7 +3,6 @@ package searchaglorithms;
 import entities.Node;
 import entities.Parser;
 import static entities.Parser.FIN;
-import static entities.Parser.PATH;
 import static entities.Parser.START;
 import static entities.Parser.WALL;
 import java.util.LinkedList;
