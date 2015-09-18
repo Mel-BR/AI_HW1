@@ -21,6 +21,7 @@ public class BFSSearch {
 	private Node goalNode;
 	private int[][] mazeVisited;
 	IOException reachedGoal;
+	private int nrOfNodesExpanded=0;
 
 
 	public BFSSearch(int[][] maze){
@@ -88,6 +89,7 @@ public class BFSSearch {
 			Node newNode = new Node(currNode,x,y);
 			this.activeQueue.add(newNode);	
 			this.mazeVisited[x][y]=1;
+			this.nrOfNodesExpanded++;
 			
 			if(this.maze[x][y]==FIN){
 				   this.goalNode = newNode;
@@ -117,9 +119,11 @@ public class BFSSearch {
 		return targetCoords;	
 	}
 
-	public int[][] getSolution() {
+	public void DispSolution() {
 		// TODO Auto-generated method stub
-		return this.solution;
+		Parser.displayBeautifulMatrix(this.solution);
+		System.out.printf("Number of nodes expanded=%d\n",this.nrOfNodesExpanded);
+		return;
 	}
 	
 	
