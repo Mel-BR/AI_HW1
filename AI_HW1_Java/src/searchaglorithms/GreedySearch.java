@@ -76,7 +76,7 @@ public class GreedySearch {
 	
 	
 	/**
-	 * print the maze with solution path, the cost, and teh number of nodes expanded 
+	 * print the maze with solution path, the cost, and the number of nodes expanded 
 	 */
 	public void printSolution() {
         System.out.println("Solution:");
