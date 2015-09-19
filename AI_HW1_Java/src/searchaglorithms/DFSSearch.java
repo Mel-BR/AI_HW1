@@ -13,8 +13,9 @@ public class DFSSearch {
     private int[][] maze;
     private int[][] solution;
     private LinkedList<Node> lifo;
-    private int[][] exploredNodes;
+    private int[][] expandedNodes;
     private int expandedNodesCounts;
+    int solCost;
     
     
     public DFSSearch(int[][] maze) {
@@ -22,40 +23,54 @@ public class DFSSearch {
         this.solution = null;
         this.lifo = new LinkedList<Node>();
         this.expandedNodesCounts = 0;
+        this.solCost = 0;
+        
+        this.solution = new int[this.maze.length][this.maze[0].length];
+        
+        for(int i = 0; i < maze.length; i++)
+            for (int j = 0; j < maze[i].length; j++)
+                this.solution[i][j] = this.maze[i][j];
+        
+        findStart();
+        
+    }
+    
+    /**
+    * Find the starting position and add the starting node to priority queue.
+    */  
+    private void findStart() 
+    {
+        this.lifo.clear();
+        this.expandedNodes = new int[maze.length][maze[0].length];
+
+
+        //findind start node
+        for(int i = 0 ; i < this.maze.length ; i++)
+        {
+            for(int j = 0 ; j < this.maze[0].length ; j++) 
+            {
+                if (this.maze[i][j]  == START)
+                {
+                    addNodeToExpandedSet(null,i,j);
+                }
+            }
+        }
     }
     
     /**
      * search algo for DFS Search
-     * @param 
-     * @return void
      */
     public void Search(){
-        this.lifo.clear();
-        this.exploredNodes = new int[maze.length][maze.length];
-        
-        //findind start node
-        for(int i = 0 ; i < this.maze.length ; i++)
-        {
-            for(int j = 0 ; j < this.maze.length ; j++) 
-            {
-                if (this.maze[i][j]  == START)
-                {
-                    lifo.add(new Node(null,i,j));
-                }
-            }
-        }
-
-        
+  
         while (lifo.size() > 0) {
             Node currentNode = lifo.removeLast();
             int x = currentNode.getX();
             int y = currentNode.getY();
             if (maze[currentNode.getX()][currentNode.getY()] == FIN) {
-                returnSolution(currentNode);
+                markSolution(currentNode);
                 break;
             }
             else{
-                this.exploredNodes[x][y] = 1;
                 //Add all adjacent nodes that are not WALLS to the list
                 //Left
                 checkAndAddNodeToList(currentNode, x-1,y);
@@ -66,49 +81,34 @@ public class DFSSearch {
                 //Down
                 checkAndAddNodeToList(currentNode, x,y+1);
             }
-            
         }
+        System.out.println("Failure");
     }
 
-     /**
-     * display the solution
+    
+    /**
+     * update the solution matrix to mark the found path
      * @param Node
-     * @return void
      */
-    public void returnSolution(Node currentNode){
-        this.solution = new int[this.maze.length][this.maze.length];
-        int cost = 0;
-        for(int i=0; i<this.maze.length; i++)
-        {
-            for(int j=0; j<this.maze.length; j++){
-                this.solution[i][j]=this.maze[i][j];
-            }      
-        }
-        
-        
+    public void markSolution(Node currentNode){
         while (currentNode!=null){
             this.solution[currentNode.getX()][currentNode.getY()]=START;
-            cost++;
+            this.solCost++;
             currentNode = currentNode.getParent();
         }
-        
-        int pop=0;
-        for(int i=0; i<this.maze.length; i++)
-        {
-            for(int j=0; j<this.maze.length; j++){
-                pop+=this.exploredNodes[i][j];
-            }      
-        }
-        
+    }
+    
+    
+    /**
+     * print the maze with solution path, the cost, and the number of nodes expanded 
+     */
+    public void printSolution() {
         System.out.println("Solution:");
         Parser.displayBeautifulMatrix(solution);
-        
-        System.out.println("\n The cost is : "+cost);
-        
-        System.out.println("\n The number of nodes expanded is : "+ this.expandedNodesCounts+" and number of nodes analyzed is : "+pop);
-        
-     
+        System.out.println("\n Cost : "+this.solCost);       
+        System.out.println("\n Nodes expanded : "+ this.expandedNodesCounts);
     }
+    
 
      /**
      * check if a node has already been visited
@@ -118,7 +118,7 @@ public class DFSSearch {
      */    
     private boolean alreadyExplored(int x, int y){
         
-        if(this.exploredNodes[x][y] == 1) {
+        if(this.expandedNodes[x][y] == 1) {
             return true;
         }
         return false;
@@ -134,9 +134,21 @@ public class DFSSearch {
         {
             if(!alreadyExplored(x,y))
             {
-                lifo.add(new Node(currentNode,x,y));
-                this.expandedNodesCounts++;
+               addNodeToExpandedSet(currentNode,x,y);
             }   
         }
+    }
+    
+    
+     /**
+     * add node to the lifo
+     * @param currentNode
+     * @param x
+     * @param y
+     */
+    private void addNodeToExpandedSet(Node currentNode,int x,int y){
+        lifo.add(new Node(currentNode,x,y));
+        this.expandedNodes[x][y]=1;
+        this.expandedNodesCounts++;
     }
 }
