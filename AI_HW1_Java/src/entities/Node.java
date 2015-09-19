@@ -50,6 +50,10 @@ public class Node implements Comparable<Node> {
     public void setCurrentPastCost(int cost){
         this.currentPathCost = cost;
     }
+    
+    public void setCurrentTotalCost(int totalCost){
+        this.totalCost = totalCost;
+    }
 
 	@Override
 	public int compareTo(Node o) {
