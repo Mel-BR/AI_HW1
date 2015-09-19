@@ -19,10 +19,9 @@ public class MazeSearch {
             
                 /* Parsing input */
 		// TODO Auto-generated method stub
-		URL url = MazeSearch.class.getClassLoader().getResource("openMaze.txt");
-		ArrayList<ArrayList<Integer>> maze = Parser.parse(url.getPath());
-		//System.out.println(Parser.toString(maze));
-                
+
+		ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/openMaze.txt");
+             
                 //Creating a more simple structure to access and to change data
                 int[][] matrix = Parser.getMatrix(maze);
                 
@@ -30,30 +29,32 @@ public class MazeSearch {
                 //Parser.displayBeautifulMatrix(matrix);
                 
                 
+                
+                
                 /* Search Algorithms */
                 
                 //DFSSearch
-                //DFSSearch dfsSearch = new DFSSearch(matrix);
-                //Search and displays the solution
-                //dfsSearch.Search();
+                /*DFSSearch dfsSearch = new DFSSearch(matrix);
+                dfsSearch.Search();
+                dfsSearch.printSolution();*/
                 
-                                
+                
                 //BFSSearch
-                //BFSSearch bfsSearch = new BFSSearch(matrix);
-                //Search and displays the solution
-                //bfsSearch.Search();                
-                //DFSSearch
+                /*BFSSearch bfsSearch = new BFSSearch(matrix);
+                Search and displays the solution
+                bfsSearch.Search();*/                
                 
                 
-                //GreedySearch greedySearch = new GreedySearch(matrix);
-                //greedySearch.search();
-                //greedySearch.printSolution();
+                //Greedy Search
+                /*GreedySearch greedySearch = new GreedySearch(matrix);
+                greedySearch.search();
+                greedySearch.printSolution();*/
               
                 
-                //AStarSearch
-                //AStarSearch greedySearch = new AStarSearch(matrix);
-                //Search and displays the solution
-                //AStarSearch.Search();
+                //A* Search
+                /*AStarSearch aStarSearch = new AStarSearch(matrix);
+                aStarSearch.Search();
+                aStarSearch.printSolution();*/
                  
 
 	}
