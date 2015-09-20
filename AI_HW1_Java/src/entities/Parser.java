@@ -11,7 +11,7 @@ public class Parser {
 	
 	public static final Integer WALL = -2; 
 	public static final Integer PATH = 2147483647;
-	public static final Integer START = -1;
+	public static final Integer START = PATH-2;
 	public static final Integer FIN = PATH-1;
 	
 	/**

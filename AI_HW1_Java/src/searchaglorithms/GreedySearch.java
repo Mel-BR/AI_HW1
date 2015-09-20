@@ -92,7 +92,13 @@ public class GreedySearch {
 	 */
 	private Node mazeSearch() {
 		Node currNode = this.pq.remove();
-		this.expands += 1;
+		int x = currNode.getX();
+		int y = currNode.getY();
+		int cost = currNode.getTotalCost();
+		if (maze[x][y] < cost) {
+			this.expands -= 1;
+			return mazeSearch();
+		}
 		// found solution if current node is the on FIN
 		if (this.solution[currNode.getX()][currNode.getY()] == FIN) {
 			return currNode;
@@ -128,11 +134,12 @@ public class GreedySearch {
 	 * @param y
 	 */
 	private void checkAndAddNodeToList(Node currNode, int x, int y) {
-		int cost = 0; //currNode.getCurrentPathCost()+1;
+		int cost = currNode.getCurrentPathCost()+1;
 		int h = heuristic(x,y);
 		if (h+cost < this.maze[x][y]) {
 			this.pq.add(new Node(currNode, x, y, cost, h));
 			this.maze[x][y] = h+cost;
+			this.expands += 1;
 		}
 	}
 

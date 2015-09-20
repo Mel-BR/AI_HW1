@@ -1,13 +1,5 @@
-import entities.Node;
-
-import java.net.URL;
 import java.util.ArrayList;
 
-
-import entities.Parser;
-import java.util.LinkedList;
-import searchaglorithms.AStarSearch;
-import searchaglorithms.DFSSearch;
 import searchaglorithms.GreedySearch;
 import entities.Parser;
 
@@ -46,9 +38,9 @@ public class MazeSearch {
                 
                 
                 //Greedy Search
-                /*GreedySearch greedySearch = new GreedySearch(matrix);
+                GreedySearch greedySearch = new GreedySearch(matrix);
                 greedySearch.search();
-                greedySearch.printSolution();*/
+                greedySearch.printSolution();
               
                 
                 //A* Search
