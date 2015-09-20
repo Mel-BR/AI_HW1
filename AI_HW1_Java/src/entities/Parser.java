@@ -3,6 +3,7 @@ package entities;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -21,12 +22,14 @@ public class Parser {
 	 */
 	public static ArrayList<ArrayList<Integer>> parse(String filename) {
 		
+		URL url = Parser.class.getClassLoader().getResource("openMaze.txt");
+		
 		ArrayList<ArrayList<Integer>> maze = new ArrayList<ArrayList<Integer>>();
 		
 		Scanner s = null;
 		
 		try {
-			s = new Scanner(new BufferedReader(new FileReader(filename)));
+			s = new Scanner(new BufferedReader(new FileReader(url.getPath())));
 			while (s.hasNextLine()) {
 				maze.add(parseString(s.nextLine()));
 			}

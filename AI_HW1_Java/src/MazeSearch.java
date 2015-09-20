@@ -1,15 +1,8 @@
-import entities.Node;
-
 import java.net.URL;
 import java.util.ArrayList;
 
-
 import entities.Parser;
-import java.util.LinkedList;
-import searchaglorithms.AStarSearch;
-import searchaglorithms.DFSSearch;
-import searchaglorithms.GreedySearch;
-import entities.Parser;
+import searchaglorithms.BFSSearch;
 
 
 
@@ -19,9 +12,10 @@ public class MazeSearch {
             
                 /* Parsing input */
 		// TODO Auto-generated method stub
-
-		ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/openMaze.txt");
-             
+		
+				
+				ArrayList<ArrayList<Integer>> maze = Parser.parse("openMaze.txt");
+		             
                 //Creating a more simple structure to access and to change data
                 int[][] matrix = Parser.getMatrix(maze);
                 
@@ -40,9 +34,9 @@ public class MazeSearch {
                 
                 
                 //BFSSearch
-                /*BFSSearch bfsSearch = new BFSSearch(matrix);
-                Search and displays the solution
-                bfsSearch.Search();*/                
+                BFSSearch bfsSearch = new BFSSearch(matrix);
+                //Search and displays the solution
+                bfsSearch.search();           
                 
                 
                 //Greedy Search
