@@ -1,35 +1,34 @@
 package searchaglorithms;
 
+import static entities.Parser.FIN;
+import static entities.Parser.START;
+import static entities.Parser.WALL;
+
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.PriorityQueue;
 import java.util.Queue;
 
 import entities.Node;
 import entities.Parser;
-import static entities.Parser.FIN;
-import static entities.Parser.PATH;
-import static entities.Parser.START;
-import static entities.Parser.WALL;
 
 public class BFSSearch {
 	private int[][] maze;
 	private int[][] solution;
 	private int[] start;
-	private int[] finish;
 	private Queue<Node> activeQueue = new LinkedList<Node>();
 	private Node goalNode;
 	private int[][] mazeVisited;
 	IOException reachedGoal;
 	private int nrOfNodesExpanded=0;
+	private int visited=START;
+	private int pathcost = 0;
 
 
 	public BFSSearch(int[][] maze){
 		this.maze = maze;
 
 		
-		this.start = findInMaze(-2);
-		this.finish = findInMaze(-1);
+		this.start = findInMaze(START);
 		this.mazeVisited = new int[this.maze.length][this.maze[0].length];
 		this.reachedGoal = new IOException();
 		
@@ -38,9 +37,6 @@ public class BFSSearch {
 			for (int j = 0; j < maze[i].length; j++)
 				this.solution[i][j] = this.maze[i][j];
 		
-		this.search();
-
-
 	}
 	
 	public void search(){
@@ -60,14 +56,15 @@ public class BFSSearch {
 		if(!(this.goalNode==null)){
 			Node currNode = this.goalNode;
 			while(!(currNode.getParent()==null)){
-				this.solution[currNode.getX()][currNode.getY()] = 3;
+				this.solution[currNode.getX()][currNode.getY()] = this.visited;
 				currNode = currNode.getParent();
+				this.pathcost++;
 			}
 			
 		}
 		
 		
-		
+		DispSolution();
 	}
 	
 
@@ -85,10 +82,10 @@ public class BFSSearch {
 	
 	private void checkIfWallOrVisited(Node currNode, int x, int y) throws IOException{
 		
-		if(this.maze[x][y]!=WALL && this.mazeVisited[x][y]!=1){
+		if(this.maze[x][y]!=WALL && this.mazeVisited[x][y]!=this.visited){
 			Node newNode = new Node(currNode,x,y);
 			this.activeQueue.add(newNode);	
-			this.mazeVisited[x][y]=1;
+			this.mazeVisited[x][y]=this.visited;
 			this.nrOfNodesExpanded++;
 			
 			if(this.maze[x][y]==FIN){
@@ -122,7 +119,7 @@ public class BFSSearch {
 	public void DispSolution() {
 		// TODO Auto-generated method stub
 		Parser.displayBeautifulMatrix(this.solution);
-		System.out.printf("Number of nodes expanded=%d\n",this.nrOfNodesExpanded);
+		System.out.printf("Number of nodes expanded=%d\tpathcost=%d\n",this.nrOfNodesExpanded,this.pathcost);
 		return;
 	}
 	

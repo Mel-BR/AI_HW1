@@ -106,6 +106,7 @@ public class AStarSearch {
             this.solCost++;
             currentNode = currentNode.getParent();
         }
+        this.solCost--; // n nodes -> n-1 moves
     }
     
     /**
@@ -133,6 +134,7 @@ public class AStarSearch {
                 //node already expanded, need to change totalCost value
                 if (n!=null){ 
                     n.setCurrentTotalCost(h+cost);
+                    n.setParent(currNode);
                 }
                 else{ // node not already expanded
                     this.expandedNodesCounts++;

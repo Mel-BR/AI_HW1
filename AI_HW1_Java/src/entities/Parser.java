@@ -3,6 +3,7 @@ package entities;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -20,6 +21,8 @@ public class Parser {
 	 * @return maze
 	 */
 	public static ArrayList<ArrayList<Integer>> parse(String filename) {
+		
+		URL url = Parser.class.getClassLoader().getResource("openMaze.txt");
 		
 		ArrayList<ArrayList<Integer>> maze = new ArrayList<ArrayList<Integer>>();
 		
