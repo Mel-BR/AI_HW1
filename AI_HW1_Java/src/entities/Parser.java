@@ -11,9 +11,10 @@ import java.util.Scanner;
 public class Parser {
 	
 	public static final Integer WALL = -2; 
-	public static final Integer PATH = 2147483647;
+	public static final Integer PATH = -16256518;
 	public static final Integer START = -1;
 	public static final Integer FIN = PATH-1;
+	public static final Integer PATH2 = -3;
 	
 	/**
 	 * parses the maze txt file into an arraylist matrix of integers
@@ -22,7 +23,7 @@ public class Parser {
 	 */
 	public static ArrayList<ArrayList<Integer>> parse(String filename) {
 		
-		URL url = Parser.class.getClassLoader().getResource("openMaze.txt");
+		URL url = Parser.class.getClassLoader().getResource(filename);
 		
 		ArrayList<ArrayList<Integer>> maze = new ArrayList<ArrayList<Integer>>();
 		

@@ -3,6 +3,9 @@ package searchaglorithms;
 import static entities.Parser.FIN;
 import static entities.Parser.START;
 import static entities.Parser.WALL;
+import static entities.Parser.PATH2;
+
+import static java.lang.Math.abs;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -20,18 +23,19 @@ public class BFSSearch {
 	private int[][] mazeVisited;
 	IOException reachedGoal;
 	private int nrOfNodesExpanded=0;
-	private int visited=START;
+	private int visited=PATH2;
 	private int pathcost = 0;
 
 
 	public BFSSearch(int[][] maze){
 		this.maze = maze;
 
-		
+		//Finding the start coordinates to start from
 		this.start = findInMaze(START);
 		this.mazeVisited = new int[this.maze.length][this.maze[0].length];
 		this.reachedGoal = new IOException();
 		
+		//Deep copying the maze to the solution
 		this.solution = new int[maze.length][maze[0].length];
 		for(int i = 0; i < maze.length; i++)
 			for (int j = 0; j < maze[i].length; j++)
@@ -123,6 +127,9 @@ public class BFSSearch {
 		return;
 	}
 	
+	public int[][] getSolution(){
+		return solution;
+	}
 	
 	
 	
