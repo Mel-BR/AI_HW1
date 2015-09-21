@@ -2,10 +2,9 @@ package GUI;
 
 import static entities.Parser.FIN;
 import static entities.Parser.PATH;
+import static entities.Parser.PATH2;
 import static entities.Parser.START;
 import static entities.Parser.WALL;
-import static entities.Parser.PATH2;
-
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -15,8 +14,14 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JPanel;
 
 public class pacPanel extends JPanel{
@@ -51,6 +56,10 @@ public class pacPanel extends JPanel{
 	private int ticksPerTile = 10;
 	private int togglePacman = 0;
 	
+	AudioInputStream audioInPacman;
+	AudioInputStream audioInEatFruit;
+	private Clip pacmanSound;
+	private Clip eatFruitSound;
 	
     public pacPanel(int[][] solMaze, int[][] currMaze, TestWindow testWindow) {
     	
@@ -93,6 +102,27 @@ public class pacPanel extends JPanel{
             System.out.println("could not find picture/s");
        }
        
+       try {
+	         // Open an audio input stream.
+	         URL url = this.getClass().getResource("pacman_chomp.wav");
+	         audioInPacman = AudioSystem.getAudioInputStream(url);
+	         
+	         url = this.getClass().getResource("pacman_eatfruit.wav");
+	         audioInEatFruit = AudioSystem.getAudioInputStream(url);
+	         // Get a sound clip resource.
+	         pacmanSound = AudioSystem.getClip();
+	         eatFruitSound = AudioSystem.getClip();
+	         // Open audio clip and load samples from the audio input stream.
+	         pacmanSound.open(audioInPacman);
+	         pacmanSound.loop(Clip.LOOP_CONTINUOUSLY);
+	      } catch (UnsupportedAudioFileException er) {
+	         er.printStackTrace();
+	      } catch (IOException ee) {
+	         ee.printStackTrace();
+	      } catch (LineUnavailableException eee) {
+	         eee.printStackTrace();
+	      }
+       
          
     }
     
@@ -110,6 +140,9 @@ public class pacPanel extends JPanel{
 	    	this.lastPos[1] = temp[1];
 	    	tileTicks = 0;
 	    	togglePacman = (togglePacman+1)%2;
+	    	
+
+	    	
     	}
     	
     	this.pacmanPosRot[0] = lastPos[0]*imageSize+((-lastPos[0]+currPos[0])*imageSize*tileTicks)/ticksPerTile;
@@ -160,6 +193,17 @@ private void findNext(){
 		pacmanPosRot[2]=270;
 	}else{
 		this.testWindow.stop();
+		this.pacmanSound.stop();
+        try {
+			eatFruitSound.open(audioInEatFruit);
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        eatFruitSound.start();
 	}
 	
 	

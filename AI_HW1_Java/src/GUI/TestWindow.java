@@ -43,7 +43,7 @@ public class TestWindow implements Runnable {
 	
 	public TestWindow(){
 		
-		ArrayList<ArrayList<Integer>> maze = Parser.parse("bigMaze.txt");
+		ArrayList<ArrayList<Integer>> maze = Parser.parse("openMaze.txt");
 		int[][] matrix = Parser.getMatrix(maze);
 		BFSSearch bfsSearch = new BFSSearch(matrix);
 		bfsSearch.search();
