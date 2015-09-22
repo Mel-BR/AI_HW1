@@ -82,7 +82,8 @@ public class DFSSearch {
                 checkAndAddNodeToList(currentNode, x,y+1);
             }
         }
-        System.out.println("Failure");
+        if((lifo.size() == 0))
+            System.out.println("Failure");
     }
 
     
