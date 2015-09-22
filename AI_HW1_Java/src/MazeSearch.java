@@ -1,13 +1,14 @@
 import java.util.ArrayList;
-
 import searchaglorithms.AStarSearch2;
 import searchaglorithms.BFSSearch2;
 import searchaglorithms.PacMan;
 import entities.Parser;
 import searchaglorithms.AStarSearch;
 import searchaglorithms.BFSSearch;
-//import searchaglorithms.AStarSearchPenalizingTurns;
+import searchaglorithms.AStarSearchPenalizingTurns;
 import searchaglorithms.DFSSearch;
+import searchaglorithms.GreedySearch2;
+import entities.Parser;
 
 
 
@@ -30,6 +31,7 @@ public class MazeSearch {
                 /* Search Algorithms */
                 
                 //DFSSearch
+
                 /*DFSSearch dfsSearch = new DFSSearch(matrix);
                 dfsSearch.Search();
                 dfsSearch.printSolution();*/
@@ -47,27 +49,21 @@ public class MazeSearch {
                 greedySearch.search();
                 greedySearch.printSolution();*/
               
-                AStarSearch2 pacman = new PacMan(pacMat);
+                /*AStarSearch2 pacman = new PacMan(pacMat);
                 pacman.search();
-                pacman.printSolution();
+                pacman.printSolution();*/
+                
                 //A* Search
                 /*AStarSearch aStarSearch = new AStarSearch(matrix);
                 aStarSearch.Search();
                 aStarSearch.printSolution();*/
-        
-                
-                //A* Search
-                /*AStarSearchHeuristicDiffOld aStarSearchDiff = new AStarSearchHeuristicDiffOld(matrix);
-                aStarSearchDiff.Search();
-                aStarSearchDiff.printSolution();*/
-                
+
                 
                 //PART 1.2
                 //A* Search 
                 /*AStarSearchPenalizingTurns aStarPenalizingTurns = new AStarSearchPenalizingTurns(matrix);
                 aStarPenalizingTurns.Search();
                 aStarPenalizingTurns.printSolution();*/
-
 
 	}
 }
