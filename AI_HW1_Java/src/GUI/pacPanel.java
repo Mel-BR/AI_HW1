@@ -38,7 +38,7 @@ public class pacPanel extends JPanel{
 	private Image floor;
 	private Image start;
 
-	private BufferedImage ghost;
+	//private BufferedImage ghost;
 	private BufferedImage pacman2;
 	private BufferedImage pacman4;
 
