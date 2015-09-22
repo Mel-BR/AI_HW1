@@ -28,8 +28,6 @@ public class Parser {
 	 */
 	public static ArrayList<ArrayList<Integer>> parse(String filename) {
 		
-		URL url = Parser.class.getClassLoader().getResource(filename);
-		
 		ArrayList<ArrayList<Integer>> maze = new ArrayList<ArrayList<Integer>>();
 		
 		Scanner s = null;
