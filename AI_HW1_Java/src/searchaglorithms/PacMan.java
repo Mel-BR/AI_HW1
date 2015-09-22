@@ -15,8 +15,9 @@ public class PacMan extends AStarSearch2 {
 	/**
 	 * Find the starting position and add the starting node to priority queue.
 	 * Find the location of the goal
-	 * FInd the lcoation of the Ghost
+	 * FInd the location of the Ghost
 	 */
+	@Override
 	protected void findStartFin() {
 		int xStart = 0; 
 		int yStart = 0;
@@ -54,16 +55,20 @@ public class PacMan extends AStarSearch2 {
 	 * @param x
 	 * @param y
 	 */
+	@Override
 	protected void checkAndAddNodeToList(Node currNode, int x, int y) {
 		Ghost ghost = currNode.getGhost().copy();
 		// check if pacman got eaten by the ghost.
 		ghost.move(this.solution);
-		Boolean dead = ghost.getPrevPos().equal(x, y) && ghost.getCurrPos().equal(x,y);
+		Boolean dead = (ghost.getPrevPos().equal(x, y) && 
+				ghost.getCurrPos().equal(currNode.getX(), currNode.getY())) ||
+				ghost.getCurrPos().equal(x, y);
 		if (dead) {
 			System.out.println("DEAD");
 			return;
 		}
 		
+		// add reachable states to queue
 		int cost = currNode.getCurrentPathCost()+1;
 		int h = heuristic(x,y);
 		if (h+cost < this.maze[x][y]) {
