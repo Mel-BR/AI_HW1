@@ -83,17 +83,18 @@ public class AStarSearch {
             else{
                 //Add all adjacent nodes that are not WALLS to the list or update the existing ones
                 //Left
-                checkAndAddNodeToList(currentNode, x-1,y);
-                //Up
                 checkAndAddNodeToList(currentNode, x,y-1);
+                //Up
+                checkAndAddNodeToList(currentNode, x-1,y);
                 //Right
-                checkAndAddNodeToList(currentNode, x+1,y);
-                //Down
                 checkAndAddNodeToList(currentNode, x,y+1);
+                //Down
+                checkAndAddNodeToList(currentNode, x+1,y);
             }
             
         }
-        System.out.println("Failure");
+        if((pq.size() == 0))
+            System.out.println("Failure");
     }
 
      /**
@@ -138,8 +139,9 @@ public class AStarSearch {
                 }
                 else{ // node not already expanded
                     this.expandedNodesCounts++;
+                    this.pq.add(new Node(currNode, x, y, cost, h));
                 }
-                this.pq.add(new Node(currNode, x, y, cost, h));
+                
 
                 this.maze[x][y] = h+cost;
         }
