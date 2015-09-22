@@ -16,7 +16,7 @@ public class MazeSearch {
 		
 				
 				ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/openMaze.txt");
-				ArrayList<ArrayList<Integer>> pacMaze = Parser.parse("src/input/bigGhost.txt");     
+				ArrayList<ArrayList<Integer>> pacMaze = Parser.parse("src/input/smallGhost.txt");     
                 //Creating a more simple structure to access and to change data
                 int[][] matrix = Parser.getMatrix(maze);
                 int[][] pacMat = Parser.getMatrix(pacMaze);

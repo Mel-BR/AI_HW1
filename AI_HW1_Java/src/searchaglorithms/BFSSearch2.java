@@ -10,6 +10,11 @@ import entities.Ghost;
 import entities.Node;
 import entities.Parser;
 
+/**
+ * BFS maze search using priority queue and uniform move costs.
+ * @author Brian
+ *
+ */
 public class BFSSearch2 {
 	protected int[][] maze;
 	protected int[][] solution;
@@ -71,11 +76,8 @@ public class BFSSearch2 {
 			int y = solNode.getY();
 			this.solution[x][y] = START; // MARK THE SOLUTION PATH WITH THE START SYMBOL			
 			solNode = solNode.getParent();
-			Ghost ghost = solNode.getGhost();
-			this.solution[ghost.getCurrPos().a][ghost.getCurrPos().b] = PATH;
-			this.solution[ghost.getPrevPos().a][ghost.getPrevPos().b] = GHOST;
-//			printSolution();
 			this.totalCost++;
+			debugSolution(solNode);
 		}
 	}
 	
@@ -151,6 +153,8 @@ public class BFSSearch2 {
 		// Manhattan distance
 		return Math.abs(this.finX - x) + Math.abs(this.finY - y);
 	}
+	
+	protected void debugSolution(Node solNode) {}
 
 
 }

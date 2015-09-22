@@ -1,11 +1,18 @@
 package searchaglorithms;
 import static entities.Parser.FIN;
 import static entities.Parser.GHOST;
+import static entities.Parser.GPATH;
+import static entities.Parser.PATH;
 import static entities.Parser.START;
 import entities.Ghost;
 import entities.Node;
 import entities.Pair;
 
+/**
+ * Add ghosts to A Star Search
+ * @author Brian
+ *
+ */
 public class PacMan extends AStarSearch2 {
 
 	public PacMan(int[][] maze) {
@@ -37,13 +44,14 @@ public class PacMan extends AStarSearch2 {
 				if (this.maze[i][j] == GHOST) {
 					xGhost = i;
 					yGhost = j;
+					this.solution[i][j] = GPATH;
 				}
 			}
 		}
 		int h = heuristic(xStart, yStart);
 		int cost = 0;
 		// create a ghost that will try to move in a direction other than right first
-		Ghost ghost = new Ghost(xGhost, yGhost, xGhost+1, yGhost);
+		Ghost ghost = new Ghost(xGhost, yGhost, xGhost, yGhost+1);
 		this.pq.add(new Node(null, xStart, yStart, ghost, cost, h));
 
 	}
@@ -60,11 +68,11 @@ public class PacMan extends AStarSearch2 {
 		Ghost ghost = currNode.getGhost().copy();
 		// check if pacman got eaten by the ghost.
 		ghost.move(this.solution);
+		// pacman dies if it switches position with the ghost of it goes into the same position as the ghost
 		Boolean dead = (ghost.getPrevPos().equal(x, y) && 
 				ghost.getCurrPos().equal(currNode.getX(), currNode.getY())) ||
 				ghost.getCurrPos().equal(x, y);
 		if (dead) {
-			System.out.println("DEAD");
 			return;
 		}
 		
@@ -76,7 +84,14 @@ public class PacMan extends AStarSearch2 {
 			this.maze[x][y] = h+cost;
 			this.expands += 1;
 		}
-
+	}
+	
+	@Override
+	protected void debugSolution(Node solNode) {
+//		Ghost ghost = solNode.getGhost();
+//		printSolution();
+//		this.solution[ghost.getCurrPos().a][ghost.getCurrPos().b] = GHOST;
+//		this.solution[ghost.getPrevPos().a][ghost.getPrevPos().b] = GPATH;
 	}
 
 }

@@ -15,7 +15,7 @@ public class Parser {
 	public static final Integer START = PATH-1;
 	public static final Integer FIN = PATH-2;
 	public static final Integer GPATH = PATH-3;
-	public static final Integer GHOST = -1;
+	public static final Integer GHOST = PATH-4;
 	public static final Integer PATH2 = -3;
 //	public static final Integer PATH = -16256518;
 //	public static final Integer START = -1;

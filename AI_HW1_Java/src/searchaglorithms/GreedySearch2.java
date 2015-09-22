@@ -2,6 +2,11 @@ package searchaglorithms;
 
 import entities.Node;
 
+/**
+ * Change the cost of BFS search to only contain the heuristic
+ * @author Brian
+ *
+ */
 public class GreedySearch2 extends BFSSearch2 {
 
 	public GreedySearch2(int[][] maze) {
@@ -10,7 +15,7 @@ public class GreedySearch2 extends BFSSearch2 {
 	}
 	
 	/**
-	 * create a new node and add queue if the new node cost is less than the current cost
+	 * create a new node and add queue if the new node has a lower heuristic than the current cost
 	 * @param currNode
 	 * @param x
 	 * @param y

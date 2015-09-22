@@ -2,6 +2,11 @@ package searchaglorithms;
 
 import entities.Node;
 
+/**
+ * BFS with heuristics
+ * @author Brian
+ *
+ */
 public class AStarSearch2 extends BFSSearch2 {
 	
 	public AStarSearch2(int[][] maze) {
