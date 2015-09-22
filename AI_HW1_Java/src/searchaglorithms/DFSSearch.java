@@ -96,7 +96,9 @@ public class DFSSearch {
             this.solCost++;
             currentNode = currentNode.getParent();
         }
+        this.solCost--; // n nodes -> n-1 moves
     }
+    
     
     
     /**

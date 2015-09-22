@@ -4,6 +4,10 @@ import searchaglorithms.AStarSearch2;
 import searchaglorithms.BFSSearch2;
 import searchaglorithms.PacMan;
 import entities.Parser;
+import searchaglorithms.AStarSearch;
+import searchaglorithms.BFSSearch;
+//import searchaglorithms.AStarSearchPenalizingTurns;
+import searchaglorithms.DFSSearch;
 
 
 
@@ -12,21 +16,17 @@ public class MazeSearch {
 	public static void main(String[] args) {
             
                 /* Parsing input */
-		// TODO Auto-generated method stub
 		
-				
-				ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/openMaze.txt");
-				ArrayList<ArrayList<Integer>> pacMaze = Parser.parse("src/input/smallGhost.txt");     
-                //Creating a more simple structure to access and to change data
+		//Classic search		
+		ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/openMaze.txt");
                 int[][] matrix = Parser.getMatrix(maze);
+                
+                //Animated search
+		ArrayList<ArrayList<Integer>> pacMaze = Parser.parse("src/input/smallGhost.txt"); 
                 int[][] pacMat = Parser.getMatrix(pacMaze);
+
                 
-                // Displaying matrix
-                //Parser.displayBeautifulMatrix(matrix);
-                
-                
-                
-                
+                // PART 1.1
                 /* Search Algorithms */
                 
                 //DFSSearch
@@ -36,9 +36,10 @@ public class MazeSearch {
                 
                 
                 //BFSSearch
-                /*BFSSearch bfsSearch = new BFSSearch(matrix);
+                //BFSSearch bfsSearch = new BFSSearch(matrix);
                 //Search and displays the solution
-                bfsSearch.search();*/           
+                //bfsSearch.search();           
+
                 
                 
                 //Greedy Search
@@ -53,7 +54,20 @@ public class MazeSearch {
                 /*AStarSearch aStarSearch = new AStarSearch(matrix);
                 aStarSearch.Search();
                 aStarSearch.printSolution();*/
-            
+        
+                
+                //A* Search
+                /*AStarSearchHeuristicDiffOld aStarSearchDiff = new AStarSearchHeuristicDiffOld(matrix);
+                aStarSearchDiff.Search();
+                aStarSearchDiff.printSolution();*/
+                
+                
+                //PART 1.2
+                //A* Search 
+                /*AStarSearchPenalizingTurns aStarPenalizingTurns = new AStarSearchPenalizingTurns(matrix);
+                aStarPenalizingTurns.Search();
+                aStarPenalizingTurns.printSolution();*/
+
 
 	}
 }
