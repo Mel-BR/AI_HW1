@@ -1,7 +1,8 @@
 import java.util.ArrayList;
-import searchaglorithms.AStarSearch;
-import searchaglorithms.BFSSearch;
-import searchaglorithms.GreedySearch;
+
+import searchaglorithms.AStarSearch2;
+import searchaglorithms.BFSSearch2;
+import searchaglorithms.PacMan;
 import entities.Parser;
 
 
@@ -15,9 +16,10 @@ public class MazeSearch {
 		
 				
 				ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/openMaze.txt");
-		             
+				ArrayList<ArrayList<Integer>> pacMaze = Parser.parse("src/input/bigGhost.txt");     
                 //Creating a more simple structure to access and to change data
                 int[][] matrix = Parser.getMatrix(maze);
+                int[][] pacMat = Parser.getMatrix(pacMaze);
                 
                 // Displaying matrix
                 //Parser.displayBeautifulMatrix(matrix);
@@ -34,22 +36,24 @@ public class MazeSearch {
                 
                 
                 //BFSSearch
-                BFSSearch bfsSearch = new BFSSearch(matrix);
+                /*BFSSearch bfsSearch = new BFSSearch(matrix);
                 //Search and displays the solution
-                bfsSearch.search();           
+                bfsSearch.search();*/           
                 
                 
                 //Greedy Search
-                GreedySearch greedySearch = new GreedySearch(matrix);
+                /*BFSSearch2 greedySearch = new AStarSearch2(matrix);
                 greedySearch.search();
-                greedySearch.printSolution();
+                greedySearch.printSolution();*/
               
-                
+                AStarSearch2 pacman = new PacMan(pacMat);
+                pacman.search();
+                pacman.printSolution();
                 //A* Search
-                AStarSearch aStarSearch = new AStarSearch(matrix);
+                /*AStarSearch aStarSearch = new AStarSearch(matrix);
                 aStarSearch.Search();
-                aStarSearch.printSolution();
-                 
+                aStarSearch.printSolution();*/
+            
 
 	}
 }

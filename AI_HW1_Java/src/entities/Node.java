@@ -3,8 +3,9 @@ package entities;
 public class Node implements Comparable<Node> {
     
     private Node parent;
-    private int x, y, currentPathCost, heuristic, totalCost;
+    private int x, y, currentPathCost, heuristic, totalCost, xG, yG;
     private Integer prevMove;
+    private Ghost ghost;
 
     
     public Node(Node parent, int x, int y){
@@ -35,6 +36,17 @@ public class Node implements Comparable<Node> {
     	this.heuristic = h;
     	this.totalCost = cost + h;
         this.prevMove = prevMove;
+    }
+    
+    public Node(Node parent, int x, int y, Ghost ghost, int cost, int h){
+    	this.parent = parent;
+    	this.x = x;
+    	this.y = y;
+    	this.currentPathCost = cost;
+    	this.heuristic = h;
+    	this.totalCost = cost + h;
+        this.prevMove = null;
+        this.ghost = ghost;
     }
     
     public Node getParent(){
@@ -79,6 +91,10 @@ public class Node implements Comparable<Node> {
     
     public Integer getPrevMove(){
         return this.prevMove;
+    }
+    
+    public Ghost getGhost(){
+    	return this.ghost;
     }
 
 	@Override

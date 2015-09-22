@@ -12,8 +12,10 @@ public class Parser {
 	
 	public static final Integer WALL = -2; 
 	public static final Integer PATH = 2147483647;
-	public static final Integer START = PATH-2;
-	public static final Integer FIN = PATH-1;
+	public static final Integer START = PATH-1;
+	public static final Integer FIN = PATH-2;
+	public static final Integer GPATH = PATH-3;
+	public static final Integer GHOST = -1;
 	
 	/**
 	 * parses the maze txt file into an arraylist matrix of integers
@@ -63,8 +65,10 @@ public class Parser {
 					ch = '.';
 				else if (label == FIN)
 					ch = 'P';
+				else if (label == GHOST)
+					ch = 'G';
 				else
-					ch = '%';
+					ch = ' ';
 				mazeString += ch;
 			}
 			mazeString += "\n";
@@ -95,8 +99,14 @@ public class Parser {
 			case 'P':
 				label = FIN;
 				break;
+			case 'G':
+				label = GHOST;
+				break;
+			case 'g':
+				label = GPATH;
+				break;
 			default:
-				label = WALL;
+				label = PATH;
 				break;
 			}
 			row.add(label);
@@ -159,8 +169,10 @@ public class Parser {
                         ch = '.';
                     else if (m[i][j]  == FIN)
                         ch = 'P';
+    				else if (m[i][j] == GHOST)
+    					ch = 'G';
                     else
-                        ch = '%';
+                        ch = ' ';
                     mazeString += ch;
                 }
                 mazeString += "\n";
