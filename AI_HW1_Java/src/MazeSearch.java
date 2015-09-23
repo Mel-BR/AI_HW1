@@ -16,7 +16,7 @@ public class MazeSearch {
 		
 				
 				ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/openMaze.txt");
-				ArrayList<ArrayList<Integer>> pacMaze = Parser.parse("src/input/smallGhost.txt");     
+				ArrayList<ArrayList<Integer>> pacMaze = Parser.parse("src/input/ghostTest.txt");     
                 //Creating a more simple structure to access and to change data
                 int[][] matrix = Parser.getMatrix(maze);
                 int[][] pacMat = Parser.getMatrix(pacMaze);
@@ -49,6 +49,7 @@ public class MazeSearch {
                 AStarSearch2 pacman = new PacMan(pacMat);
                 pacman.search();
                 pacman.printSolution();
+                pacman.getSolNode();
                 //A* Search
                 /*AStarSearch aStarSearch = new AStarSearch(matrix);
                 aStarSearch.Search();

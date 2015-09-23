@@ -23,6 +23,7 @@ public class BFSSearch2 {
 	protected int finY;
 	protected int totalCost;
 	protected int expands;
+	protected Node solNode;
 
 
 	public BFSSearch2(int[][] maze) {
@@ -62,6 +63,13 @@ public class BFSSearch2 {
 		}
 	}
 
+	/**
+	 * Get the final node of the search
+	 * @return
+	 */
+	public Node getSolNode() {
+		return this.solNode;
+	}
 	
 	/**
 	 * execute algorithm and create the solution maze matrix
@@ -70,6 +78,7 @@ public class BFSSearch2 {
 		this.totalCost = 0;
 		this.expands = 0;
 		Node solNode = mazeSearch();
+		this.solNode = solNode;
 		// backtrack from fin to start
 		while (solNode.getParent() != null) {
 			int x = solNode.getX();
