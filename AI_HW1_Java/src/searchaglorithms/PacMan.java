@@ -68,11 +68,12 @@ public class PacMan extends AStarSearch2 {
 		Ghost ghost = currNode.getGhost().copy();
 		// check if pacman got eaten by the ghost.
 		ghost.move(this.solution);
-		// pacman dies if it switches position with the ghost of it goes into the same position as the ghost
+		// pacman dies if it switches position with the ghost or if it goes into the same position as the ghost
 		Boolean dead = (ghost.getPrevPos().equal(x, y) && 
 				ghost.getCurrPos().equal(currNode.getX(), currNode.getY())) ||
 				ghost.getCurrPos().equal(x, y);
 		if (dead) {
+			moveBack(currNode, ghost);
 			return;
 		}
 		
@@ -92,6 +93,27 @@ public class PacMan extends AStarSearch2 {
 //		printSolution();
 //		this.solution[ghost.getCurrPos().a][ghost.getCurrPos().b] = GHOST;
 //		this.solution[ghost.getPrevPos().a][ghost.getPrevPos().b] = GPATH;
+	}
+	
+	/**
+	 * Allow Pacman to move back to its previous position to stall time until the ghost passes
+	 * @param currNode
+	 * @param ghost
+	 */
+	private void moveBack(Node currNode, Ghost ghost) {
+		int xCurr = currNode.getX();
+		int yCurr = currNode.getY();
+		int xPrev = currNode.getParent().getX();
+		int yPrev = currNode.getParent().getY();
+		
+		int cost = currNode.getCurrentPathCost()+1;
+		int h = heuristic(xPrev, yPrev);
+		
+		Node backNode = new Node(currNode, xPrev, yPrev, ghost, cost, h);
+		this.pq.add(backNode);
+		this.maze[xPrev][yPrev] = h+cost;
+		this.maze[xCurr][yCurr] = PATH; // allow higher cost nodes to move into this position
+		this.expands += 1;
 	}
 
 }

@@ -6,7 +6,11 @@ public class Node implements Comparable<Node> {
     private int x, y, currentPathCost, heuristic, totalCost, xG, yG;
     private Integer prevMove;
     private Ghost ghost;
+    private Boolean stall;
 
+    //============================================================================
+    // Constructors
+    //============================================================================
     
     public Node(Node parent, int x, int y){
         this.parent = parent;
@@ -47,8 +51,12 @@ public class Node implements Comparable<Node> {
     	this.totalCost = cost + h;
         this.prevMove = null;
         this.ghost = ghost;
+        this.stall = false;
     }
     
+    //============================================================================
+    // Getters
+    //============================================================================
     public Node getParent(){
         return this.parent;
     }
@@ -73,6 +81,22 @@ public class Node implements Comparable<Node> {
     	return this.totalCost;
     }
     
+    public Integer getPrevMove(){
+        return this.prevMove;
+    }
+    
+    public Ghost getGhost(){
+    	return this.ghost;
+    }
+    
+    public Boolean getStall() {
+    	return this.stall;
+    }
+    
+    //============================================================================
+    // Setters
+    //============================================================================
+    
     public void setCurrentPastCost(int cost){
         this.currentPathCost = cost;
     }
@@ -89,13 +113,11 @@ public class Node implements Comparable<Node> {
         this.parent = parent;
     }  
     
-    public Integer getPrevMove(){
-        return this.prevMove;
+    public void setStall(Boolean stall){
+    	this.stall = stall;
     }
     
-    public Ghost getGhost(){
-    	return this.ghost;
-    }
+
 
 	@Override
 	public int compareTo(Node o) {
