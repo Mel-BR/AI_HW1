@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 
 import entities.Parser;
+import searchaglorithms.AStarSearch2;
 import searchaglorithms.BFSSearch;
+import searchaglorithms.PacMan;
 
 public class TestWindow implements Runnable {
 
@@ -17,16 +19,24 @@ public class TestWindow implements Runnable {
 
 	public TestWindow(){
 		
-		ArrayList<ArrayList<Integer>> maze = Parser.parse("openMaze.txt");
+		ArrayList<ArrayList<Integer>> maze = Parser.parse("smallGhost.txt");
 		int[][] matrix = Parser.getMatrix(maze);
-		BFSSearch bfsSearch = new BFSSearch(matrix);
-		bfsSearch.search();
+		int[][] matrixClean = Parser.getMatrix(maze);
+        AStarSearch2 pacman = new PacMan(matrix);
+        pacman.search();
+        pacman.printSolution();
+		
+		
+//		BFSSearch bfsSearch = new BFSSearch(matrix);
+//		bfsSearch.search();
 		
 		
 		
 		frame = new JFrame(NAME);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		panel = new pacPanel(bfsSearch.getSolution(),matrix,this);
+		
+		panel = new pacPanel(pacman.getSolution(),matrixClean,this);
+//		panel = new pacPanel(bfsSearch.getSolution(),matrix,this);
 		
 		frame.setSize(panel.windowSize);
 		frame.add(panel);
