@@ -6,6 +6,8 @@ public class Node implements Comparable<Node> {
     private int x, y, currentPathCost, heuristic, totalCost, xG, yG;
     private Integer prevMove;
     private Ghost ghost;
+    private Integer direction;
+
 
     
     public Node(Node parent, int x, int y){
@@ -15,7 +17,7 @@ public class Node implements Comparable<Node> {
         this.currentPathCost = -1;
         this.heuristic = 0;
         this.totalCost = this.currentPathCost;
-        this.prevMove = null;
+        this.direction = null;
     }
     
     public Node(Node parent, int x, int y, int cost, int h){
@@ -25,17 +27,17 @@ public class Node implements Comparable<Node> {
     	this.currentPathCost = cost;
     	this.heuristic = h;
     	this.totalCost = cost + h;
-        this.prevMove = null;
+        this.direction = null;
     } 
     
-    public Node(Node parent, int x, int y, int cost, int h, Integer prevMove){
+    public Node(Node parent, int x, int y, int cost, int h, Integer direction){
     	this.parent = parent;
     	this.x = x;
     	this.y = y;
     	this.currentPathCost = cost;
     	this.heuristic = h;
     	this.totalCost = cost + h;
-        this.prevMove = prevMove;
+        this.direction = direction;
     }
     
     public Node(Node parent, int x, int y, Ghost ghost, int cost, int h){
@@ -81,16 +83,16 @@ public class Node implements Comparable<Node> {
         this.totalCost = totalCost;
     }
     
-    public void setPrevMove(Integer move){
-        this.prevMove = move;
+    public void setDirection(Integer direction){
+        this.direction = direction;
     }    
     
     public void setParent(Node parent){
         this.parent = parent;
     }  
     
-    public Integer getPrevMove(){
-        return this.prevMove;
+    public Integer getDirection(){
+        return this.direction;
     }
     
     public Ghost getGhost(){

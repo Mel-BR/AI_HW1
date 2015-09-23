@@ -82,7 +82,8 @@ public class DFSSearch {
                 checkAndAddNodeToList(currentNode, x,y+1);
             }
         }
-        System.out.println("Failure");
+        if((lifo.size() == 0))
+            System.out.println("Failure");
     }
 
     
@@ -96,7 +97,9 @@ public class DFSSearch {
             this.solCost++;
             currentNode = currentNode.getParent();
         }
+        this.solCost--; // n nodes -> n-1 moves
     }
+    
     
     
     /**
