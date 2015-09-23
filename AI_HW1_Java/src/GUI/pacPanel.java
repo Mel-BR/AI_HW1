@@ -5,6 +5,8 @@ import static entities.Parser.PATH;
 import static entities.Parser.PATH2;
 import static entities.Parser.START;
 import static entities.Parser.WALL;
+import static entities.Parser.GHOST;
+import static entities.Parser.GPATH;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -24,6 +26,8 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JPanel;
 
+import entities.Parser;
+
 public class pacPanel extends JPanel{
 
     /**
@@ -37,10 +41,12 @@ public class pacPanel extends JPanel{
 	private Image goal;
 	private Image floor;
 	private Image start;
+	private Image ghost1;
 
-	private BufferedImage ghost;
+	//private BufferedImage ghost;
 	private BufferedImage pacman2;
 	private BufferedImage pacman4;
+	private BufferedImage ghost2;
 
 	
 	private int[] startPos;
@@ -60,6 +66,11 @@ public class pacPanel extends JPanel{
 	AudioInputStream audioInEatFruit;
 	private Clip pacmanSound;
 	private Clip eatFruitSound;
+	private int[] startPosGhost;
+	private int[] lastPosGhost= {9999,9999};
+	private int[] currPosGhost;
+	private int[] ghostPosRot = {100,12,0};
+	private int[][] ghostMaze;
 	
     public pacPanel(int[][] solMaze, int[][] currMaze, TestWindow testWindow) {
     	
@@ -73,7 +84,21 @@ public class pacPanel extends JPanel{
     	
     	this.startPos = findInMaze(START);
     	this.currPos = this.startPos;
+    	this.startPosGhost = findInMaze(GHOST);
+    	this.currPosGhost = this.startPosGhost;
     	
+		this.ghostMaze = new int[currMaze.length][currMaze[0].length];
+		for(int i = 0; i < currMaze.length; i++)
+			for (int j = 0; j < currMaze[i].length; j++)
+				this.ghostMaze[i][j] = this.currMaze[i][j];
+		
+    	this.ghostMaze[this.startPosGhost[0]][this.startPosGhost[1]] = GPATH;
+    	this.currMaze[this.startPosGhost[0]][this.startPosGhost[1]] = GPATH;
+    	
+    	
+    	System.out.println(startPos[0]);
+    	System.out.println(startPos[1]);
+    	Parser.displayRawMatrix(currMaze);
     	
        try {          
 			wall = ImageIO.read(this.getClass().getResource("wall.png")).getScaledInstance(imageSize, imageSize, Image.SCALE_SMOOTH);
@@ -92,6 +117,14 @@ public class pacPanel extends JPanel{
 			Graphics2D bGr2 = pacman4.createGraphics();
 			bGr2.drawImage(pacman3, 0, 0, null);
 			bGr2.dispose();
+			
+			ghost1 = ImageIO.read(this.getClass().getResource("ghost.png")).getScaledInstance(imageSize, imageSize, Image.SCALE_SMOOTH);
+			
+			ghost2 = new BufferedImage(pacman3.getWidth(null), pacman3.getHeight(null), BufferedImage.TYPE_INT_ARGB);   
+			// Draw the image on to the buffered image
+			Graphics2D bGr3 = ghost2.createGraphics();
+			bGr3.drawImage(ghost1, 0, 0, null);
+			bGr3.dispose();
 			
 			path = ImageIO.read(this.getClass().getResource("path.png")).getScaledInstance(imageSize, imageSize, Image.SCALE_SMOOTH);
 			goal = ImageIO.read(this.getClass().getResource("goal.png")).getScaledInstance(imageSize, imageSize, Image.SCALE_SMOOTH);
@@ -131,15 +164,15 @@ public class pacPanel extends JPanel{
     	
     	tileTicks++;
     	if (tileTicks>=ticksPerTile){
-    		int[] temp = {0,0};
-    		temp[0] = this.currPos[0];
-	    	temp[1] = this.currPos[1];
-	    	this.currMaze[this.currPos[0]][this.currPos[1]] = PATH2;
-	    	findNext();
-	    	this.lastPos[0] = temp[0];
-	    	this.lastPos[1] = temp[1];
-	    	tileTicks = 0;
+    		
+			tileTicks = 0;
+	    	this.currMaze[this.currPos[0]][this.currPos[1]] = START;
+	    	findNext(this.solMaze,this.lastPos,this.currPos,START,1);
+	    	
 	    	togglePacman = (togglePacman+1)%2;
+	    	
+	    	findNext(this.ghostMaze,this.lastPosGhost,this.currPosGhost,GPATH,0);
+	    	
 	    	
 
 	    	
@@ -148,6 +181,10 @@ public class pacPanel extends JPanel{
     	this.pacmanPosRot[0] = lastPos[0]*imageSize+((-lastPos[0]+currPos[0])*imageSize*tileTicks)/ticksPerTile;
     	this.pacmanPosRot[1] = lastPos[1]*imageSize+((-lastPos[1]+currPos[1])*imageSize*tileTicks)/ticksPerTile;
     	
+    	this.ghostPosRot[0] = lastPosGhost[0]*imageSize+((-lastPosGhost[0]+currPosGhost[0])*imageSize*tileTicks)/ticksPerTile;
+    	this.ghostPosRot[1] = lastPosGhost[1]*imageSize+((-lastPosGhost[1]+currPosGhost[1])*imageSize*tileTicks)/ticksPerTile;
+
+    			
     }
     
 	//Finds target in this.maze and returns the coordiantes in [row][col]
@@ -170,64 +207,75 @@ public class pacPanel extends JPanel{
 		return targetCoords;	
 	}
 	
-private void findNext(){
+private void findNext(int[][] maze, int[] lastPos, int[] currPos, int pathValue, int isPacman){
 		
 	
 	int xold = lastPos[0];
 	int yold = lastPos[1];
 	
+	lastPos[0] = currPos[0];
+	lastPos[1] = currPos[1];
+	
 	int x = currPos[0];
 	int y = currPos[1];
 		
-	if		(solMaze[x+1][y] == PATH2 & (x+1)!=xold){
+	if		(maze[x+1][y] == pathValue & (x+1)!=xold){
 		currPos[0]++;
-		pacmanPosRot[2]=0;
-	}else if(solMaze[x-1][y] == PATH2 & (x-1)!=xold){
+		if (isPacman==1){pacmanPosRot[2] = 0;}
+	}else if(maze[x-1][y] == pathValue & (x-1)!=xold){
 		currPos[0]--;
-		pacmanPosRot[2]=180;
-	}else if(solMaze[x][y+1] == PATH2 & (y+1)!=yold){
+		if (isPacman==1){pacmanPosRot[2] = 180;}
+	}else if(maze[x][y+1] == pathValue & (y+1)!=yold){
 		currPos[1]++;
-		pacmanPosRot[2]=90;
-	}else if(solMaze[x][y-1] == PATH2 & (y-1)!=yold){
+		if (isPacman==1){pacmanPosRot[2] = 90;}
+	}else if(maze[x][y-1] == pathValue & (y-1)!=yold){
 		currPos[1]--;
-		pacmanPosRot[2]=270;
+		if (isPacman==1){pacmanPosRot[2] = 270;}
 	}else{
-		this.testWindow.stop();
-		this.pacmanSound.stop();
-        try {
-			eatFruitSound.open(audioInEatFruit);
-		} catch (LineUnavailableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
+		if (isPacman==1){
+			this.testWindow.stop();
+			this.pacmanSound.stop();
+	        try {
+				eatFruitSound.open(audioInEatFruit);
+			} catch (LineUnavailableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        eatFruitSound.start();
+		}else{
+			findNext(this.ghostMaze,this.lastPosGhost,this.currPosGhost,GPATH,0);
 		}
-        eatFruitSound.start();
 	}
+
+	
+	
 	
 	
 	}
     
     
-    private void paintPacman(Graphics g){
-    	int drawLocationX = pacmanPosRot[0];
-    	int drawLocationY = pacmanPosRot[1];
+    private void paintObject(Graphics g,int isPacman, BufferedImage icon1,BufferedImage icon2,int[] posRot){
+    	int drawLocationX = posRot[0];
+    	int drawLocationY = posRot[1];
+    	int rot = posRot[2];
 
     	// Rotation information
-
-    	double rotationRequired = Math.toRadians (pacmanPosRot[2]);
-    	double locationX = pacman2.getWidth(null) / 2;
-    	double locationY = pacman2.getHeight(null) / 2;
+    	double rotationRequired = Math.toRadians (rot);
+    	double locationX = icon1.getWidth(null) / 2;
+    	double locationY = icon1.getHeight(null) / 2;
     	AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
     	AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
     	
     	Graphics2D g2d = (Graphics2D) g;
     	// Drawing the rotated image at the required drawing locations
     	if (togglePacman == 1){
-    	g2d.drawImage(op.filter(pacman2, null), drawLocationX, drawLocationY, null);}
+    	g2d.drawImage(op.filter(icon1, null), drawLocationX, drawLocationY, null);}
     	else{
-        	g2d.drawImage(op.filter(pacman4, null), drawLocationX, drawLocationY, null);}
+        	g2d.drawImage(op.filter(icon2, null), drawLocationX, drawLocationY, null);}
     	
     }
 
@@ -238,20 +286,18 @@ private void findNext(){
 				int value = currMaze[i][j];
 				if (value==WALL){
 			        g.drawImage(wall, i*imageSize, j*imageSize, null);
-				}else if(value==PATH){
-					g.drawImage(floor, i*imageSize, j*imageSize, null);
-				}
-				else if(value==FIN){
+				}else if(value==FIN){
 					g.drawImage(goal, i*imageSize, j*imageSize, null);
 				}
 				else if(value==START){
 					g.drawImage(start, i*imageSize, j*imageSize, null);
 				}
-				else if(value==PATH2){
+				else if(value==GHOST){
 					g.drawImage(path, i*imageSize, j*imageSize, null);
 				}
 				else{
-					System.out.printf("Unknown ID number for image tile:%d\n",value);
+					g.drawImage(floor, i*imageSize, j*imageSize, null);
+					//System.out.printf("Unknown ID number for image tile:%d\n",value);
 				}
 				
 			}
@@ -268,7 +314,8 @@ private void findNext(){
         super.paintComponent(g);
         
         updateMaze(g);
-        paintPacman(g);
+        paintObject(g,1,pacman2,pacman4,pacmanPosRot);
+        paintObject(g,0,ghost2,ghost2,ghostPosRot);
     }
 
 }
