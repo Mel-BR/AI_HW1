@@ -145,13 +145,10 @@ public class AStarSearchPenalizingTurns {
             this.solution[currentNode.getX()][currentNode.getY()]=START;
             parent = currentNode.getParent();
             if (parent!=null){
-                System.out.println(parent.getDirection().intValue() +" "+ currentNode.getDirection().intValue() +" "+ this.solCost+" "+currentNode.getX()+" "+currentNode.getY());
                 if(parent.getDirection().intValue() == currentNode.getDirection().intValue())
                     this.solCost+=FORWARDCOST;
                 else
                     this.solCost+=TURNCOST;
-                
-                System.out.println("   ---> "+ this.solCost);
             }
             currentNode = parent;
         }
@@ -161,7 +158,7 @@ public class AStarSearchPenalizingTurns {
      * print the maze with solution path, the cost, and the number of nodes expanded 
      */
     public void printSolution() {
-        System.out.println("Solution:");
+        System.out.println("Solution with forward cost = "+FORWARDCOST+" and turn cost = "+TURNCOST);
         Parser.displayBeautifulMatrix(solution);
         System.out.println("\n Cost : "+this.solCost);       
         System.out.println("\n Nodes expanded : "+ this.expandedNodesCounts);
