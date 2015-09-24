@@ -53,7 +53,7 @@ public class MazeSearch {
                 pacman.search();
                 pacman.printSolution();*/
                 
-s                //A* Search
+                //A* Search
                 /*AStarSearch aStarSearch = new AStarSearch(matrix);
                 aStarSearch.Search();
                 aStarSearch.printSolution();*/

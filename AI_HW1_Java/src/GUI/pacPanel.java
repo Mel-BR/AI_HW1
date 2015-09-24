@@ -1,12 +1,10 @@
 package GUI;
 
 import static entities.Parser.FIN;
-import static entities.Parser.PATH;
-import static entities.Parser.PATH2;
-import static entities.Parser.START;
-import static entities.Parser.WALL;
 import static entities.Parser.GHOST;
 import static entities.Parser.GPATH;
+import static entities.Parser.START;
+import static entities.Parser.WALL;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -17,6 +15,7 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Stack;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
@@ -25,8 +24,6 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JPanel;
-
-import entities.Parser;
 
 public class pacPanel extends JPanel{
 
@@ -47,35 +44,38 @@ public class pacPanel extends JPanel{
 	private BufferedImage pacman2;
 	private BufferedImage pacman4;
 	private BufferedImage ghost2;
+	
+	//-------------
+	private Stack<int[]> objectPath;
 
 	
 	private int[] startPos;
 	private int imageSize = 25;
-	private int[][] solMaze;
 	private int[][] currMaze;
 	public Dimension windowSize;
-	private int[] pacmanPosRot = {300,12,45}; //{x,y,rotation{deg}}
-	private int[] currPos;
-	private int[] lastPos = {9999,9999};
+
 	private TestWindow testWindow;
 	private int tileTicks = 0;
 	private int ticksPerTile = 10;
 	private int togglePacman = 0;
 	
-	AudioInputStream audioInPacman;
-	AudioInputStream audioInEatFruit;
+	private int[] newObjectPos = {10,10,10,10};
+	private int[] oldObjectPos = {20,20,20,20};
+	private int[] pacmanPosRot = {300,12,45}; //{x,y,rotation{deg}}
+	private int[] ghostPosRot = {100,12,0};
+	
+	private AudioInputStream audioInPacman;
+	private AudioInputStream audioInEatFruit;
 	private Clip pacmanSound;
 	private Clip eatFruitSound;
 	private int[] startPosGhost;
-	private int[] lastPosGhost= {9999,9999};
-	private int[] currPosGhost;
-	private int[] ghostPosRot = {100,12,0};
+	
 	private int[][] ghostMaze;
 	
-    public pacPanel(int[][] solMaze, int[][] currMaze, TestWindow testWindow) {
+    public pacPanel(Stack<int[]> objectPath, int[][] currMaze, TestWindow testWindow) {
     	
     	this.testWindow = testWindow;
-    	this.solMaze = solMaze;
+    	this.objectPath = objectPath;
     	this.currMaze = currMaze;
     	int width = (this.currMaze.length+1)*imageSize;
     	int height = (this.currMaze[0].length+2)*imageSize;
@@ -83,22 +83,15 @@ public class pacPanel extends JPanel{
     	this.windowSize.setSize(width,height);
     	
     	this.startPos = findInMaze(START);
-    	this.currPos = this.startPos;
+    	this.newObjectPos[0] = this.startPos[0];
+    	this.newObjectPos[1] = this.startPos[1];
     	this.startPosGhost = findInMaze(GHOST);
-    	this.currPosGhost = this.startPosGhost;
-    	
-		this.ghostMaze = new int[currMaze.length][currMaze[0].length];
-		for(int i = 0; i < currMaze.length; i++)
-			for (int j = 0; j < currMaze[i].length; j++)
-				this.ghostMaze[i][j] = this.currMaze[i][j];
-		
-    	this.ghostMaze[this.startPosGhost[0]][this.startPosGhost[1]] = GPATH;
+    	this.newObjectPos[2] = this.startPosGhost[0];
+    	this.newObjectPos[3] = this.startPosGhost[1];
+
     	this.currMaze[this.startPosGhost[0]][this.startPosGhost[1]] = GPATH;
     	
-    	
-    	System.out.println(startPos[0]);
-    	System.out.println(startPos[1]);
-    	Parser.displayRawMatrix(currMaze);
+
     	
        try {          
 			wall = ImageIO.read(this.getClass().getResource("wall.png")).getScaledInstance(imageSize, imageSize, Image.SCALE_SMOOTH);
@@ -166,26 +159,62 @@ public class pacPanel extends JPanel{
     	if (tileTicks>=ticksPerTile){
     		
 			tileTicks = 0;
-	    	this.currMaze[this.currPos[0]][this.currPos[1]] = START;
-	    	findNext(this.solMaze,this.lastPos,this.currPos,START,1);
+	    	this.currMaze[this.newObjectPos[0]][this.newObjectPos[1]] = START;
+	    	oldObjectPos[0] = newObjectPos[0];
+	    	oldObjectPos[1] = newObjectPos[1];
+	    	oldObjectPos[2] = newObjectPos[2];
+	    	oldObjectPos[3] = newObjectPos[3];
+	    	if (!objectPath.isEmpty()){
+	    		newObjectPos = objectPath.pop();
+	    	}else{
+	    		endAnimation();
+	    	}
+	    	
+	    	if ((newObjectPos[0]-oldObjectPos[0])>0){
+	    		pacmanPosRot[2] = 0;
+	    	}else if ((newObjectPos[0]-oldObjectPos[0])<0){
+	    		pacmanPosRot[2] = 180;
+	    	}else if ((newObjectPos[1]-oldObjectPos[1])<0){
+	    		pacmanPosRot[2] = -90;
+	    	}else if ((newObjectPos[1]-oldObjectPos[1])>0){
+	    		pacmanPosRot[2] = 90;
+	    	}
+	    	
 	    	
 	    	togglePacman = (togglePacman+1)%2;
-	    	
-	    	findNext(this.ghostMaze,this.lastPosGhost,this.currPosGhost,GPATH,0);
-	    	
+	    		    	
 	    	
 
 	    	
     	}
     	
-    	this.pacmanPosRot[0] = lastPos[0]*imageSize+((-lastPos[0]+currPos[0])*imageSize*tileTicks)/ticksPerTile;
-    	this.pacmanPosRot[1] = lastPos[1]*imageSize+((-lastPos[1]+currPos[1])*imageSize*tileTicks)/ticksPerTile;
+    	this.pacmanPosRot[0] = oldObjectPos[0]*imageSize+((-oldObjectPos[0]+newObjectPos[0])*imageSize*tileTicks)/ticksPerTile;
+    	this.pacmanPosRot[1] = oldObjectPos[1]*imageSize+((-oldObjectPos[1]+newObjectPos[1])*imageSize*tileTicks)/ticksPerTile;
     	
-    	this.ghostPosRot[0] = lastPosGhost[0]*imageSize+((-lastPosGhost[0]+currPosGhost[0])*imageSize*tileTicks)/ticksPerTile;
-    	this.ghostPosRot[1] = lastPosGhost[1]*imageSize+((-lastPosGhost[1]+currPosGhost[1])*imageSize*tileTicks)/ticksPerTile;
+    	this.ghostPosRot[0] = oldObjectPos[2]*imageSize+((-oldObjectPos[2]+newObjectPos[2])*imageSize*tileTicks)/ticksPerTile;
+    	this.ghostPosRot[1] = oldObjectPos[3]*imageSize+((-oldObjectPos[3]+newObjectPos[3])*imageSize*tileTicks)/ticksPerTile;
 
     			
     }
+    
+    
+    
+    private void endAnimation(){
+    	this.testWindow.stop();
+		this.pacmanSound.stop();
+        try {
+			eatFruitSound.open(audioInEatFruit);
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        eatFruitSound.start();
+    }
+    
+    
     
 	//Finds target in this.maze and returns the coordiantes in [row][col]
 	private int[] findInMaze(int target){
@@ -207,55 +236,6 @@ public class pacPanel extends JPanel{
 		return targetCoords;	
 	}
 	
-private void findNext(int[][] maze, int[] lastPos, int[] currPos, int pathValue, int isPacman){
-		
-	
-	int xold = lastPos[0];
-	int yold = lastPos[1];
-	
-	lastPos[0] = currPos[0];
-	lastPos[1] = currPos[1];
-	
-	int x = currPos[0];
-	int y = currPos[1];
-		
-	if		(maze[x+1][y] == pathValue & (x+1)!=xold){
-		currPos[0]++;
-		if (isPacman==1){pacmanPosRot[2] = 0;}
-	}else if(maze[x-1][y] == pathValue & (x-1)!=xold){
-		currPos[0]--;
-		if (isPacman==1){pacmanPosRot[2] = 180;}
-	}else if(maze[x][y+1] == pathValue & (y+1)!=yold){
-		currPos[1]++;
-		if (isPacman==1){pacmanPosRot[2] = 90;}
-	}else if(maze[x][y-1] == pathValue & (y-1)!=yold){
-		currPos[1]--;
-		if (isPacman==1){pacmanPosRot[2] = 270;}
-	}else{
-		
-		if (isPacman==1){
-			this.testWindow.stop();
-			this.pacmanSound.stop();
-	        try {
-				eatFruitSound.open(audioInEatFruit);
-			} catch (LineUnavailableException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	        eatFruitSound.start();
-		}else{
-			findNext(this.ghostMaze,this.lastPosGhost,this.currPosGhost,GPATH,0);
-		}
-	}
-
-	
-	
-	
-	
-	}
     
     
     private void paintObject(Graphics g,int isPacman, BufferedImage icon1,BufferedImage icon2,int[] posRot){

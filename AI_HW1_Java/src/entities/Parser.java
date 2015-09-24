@@ -29,6 +29,7 @@ public class Parser {
 	public static ArrayList<ArrayList<Integer>> parse(String filename) {
 		
 		ArrayList<ArrayList<Integer>> maze = new ArrayList<ArrayList<Integer>>();
+		URL url = Parser.class.getClassLoader().getResource(filename);
 		
 		Scanner s = null;
 		
@@ -38,8 +39,21 @@ public class Parser {
 				maze.add(parseString(s.nextLine()));
 			}
 		} catch (FileNotFoundException e) {
-			System.out.println("file not found");
-			e.printStackTrace();
+			try {
+				s = new Scanner(new BufferedReader(new FileReader(url.getPath())));
+				while (s.hasNextLine()) {
+					maze.add(parseString(s.nextLine()));
+				}
+			} catch (FileNotFoundException ee) {
+				System.out.println("file not found");
+				ee.printStackTrace();
+			} finally {
+				if (s != null) {
+					s.close();
+				}
+			}
+//			System.out.println("file not found");
+//			e.printStackTrace();
 		} finally {
 			if (s != null) {
 				s.close();

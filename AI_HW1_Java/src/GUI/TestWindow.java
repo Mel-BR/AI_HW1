@@ -1,11 +1,12 @@
 package GUI;
 import java.util.ArrayList;
+import java.util.Stack;
 
 import javax.swing.JFrame;
 
+import entities.Node;
 import entities.Parser;
 import searchaglorithms.AStarSearch2;
-import searchaglorithms.BFSSearch;
 import searchaglorithms.PacMan;
 
 public class TestWindow implements Runnable {
@@ -19,24 +20,35 @@ public class TestWindow implements Runnable {
 
 	public TestWindow(){
 		
-		ArrayList<ArrayList<Integer>> maze = Parser.parse("smallGhost.txt");
+		ArrayList<ArrayList<Integer>> maze = Parser.parse("mediumGhost.txt");
 		int[][] matrix = Parser.getMatrix(maze);
 		int[][] matrixClean = Parser.getMatrix(maze);
         AStarSearch2 pacman = new PacMan(matrix);
         pacman.search();
-        pacman.printSolution();
-		
-		
-//		BFSSearch bfsSearch = new BFSSearch(matrix);
-//		bfsSearch.search();
-		
+        
+        Node currNode = pacman.getSolNode();
+        Stack<int[]> objectPath = new Stack<int[]>();
+
+        while(currNode.getParent()!=null){
+        	int[] pos = new int[4];
+        	pos[0] = currNode.getX();
+        	pos[1] = currNode.getY();
+        	pos[2] = currNode.getGhost().getCurrPos().a;
+        	pos[3] = currNode.getGhost().getCurrPos().b;
+        	objectPath.push(pos);
+        	currNode = currNode.getParent();
+        	
+        }
+
 		
 		
 		frame = new JFrame(NAME);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		panel = new pacPanel(pacman.getSolution(),matrixClean,this);
-//		panel = new pacPanel(bfsSearch.getSolution(),matrix,this);
+		
+		
+		
+		panel = new pacPanel(objectPath,matrixClean,this);
 		
 		frame.setSize(panel.windowSize);
 		frame.add(panel);
