@@ -1,5 +1,6 @@
 package searchaglorithms;
 import static entities.Parser.FIN;
+import static entities.Parser.WALL;
 import static entities.Parser.GHOST;
 import static entities.Parser.GPATH;
 import static entities.Parser.PATH;
@@ -73,7 +74,14 @@ public class PacMan extends AStarSearch2 {
 				ghost.getCurrPos().equal(currNode.getX(), currNode.getY())) ||
 				ghost.getCurrPos().equal(x, y);
 		if (dead) {
-			moveBack(currNode, ghost);
+			//moveBack(currNode, ghost);
+			int xCurr = currNode.getX();
+			int yCurr = currNode.getY();
+			maze[xCurr][yCurr] = PATH;
+			if (xCurr+1 != x || yCurr != y) runAway(currNode, ghost, xCurr+1, yCurr);
+			if (xCurr-1 != x || yCurr != y) runAway(currNode, ghost, xCurr-1, yCurr);
+			if (xCurr != x || yCurr+1 != y) runAway(currNode, ghost, xCurr, yCurr+1);
+			if (xCurr != x || yCurr-1 != y) runAway(currNode, ghost, xCurr, yCurr-1);
 			return;
 		}
 		
@@ -95,25 +103,48 @@ public class PacMan extends AStarSearch2 {
 //		this.solution[ghost.getPrevPos().a][ghost.getPrevPos().b] = GPATH;
 	}
 	
-	/**
-	 * Allow Pacman to move back to its previous position to stall time until the ghost passes
-	 * @param currNode
-	 * @param ghost
-	 */
-	private void moveBack(Node currNode, Ghost ghost) {
-		int xCurr = currNode.getX();
-		int yCurr = currNode.getY();
-		int xPrev = currNode.getParent().getX();
-		int yPrev = currNode.getParent().getY();
-		
+	
+	private void runAway(Node currNode, Ghost ghost, int x, int y) {
 		int cost = currNode.getCurrentPathCost()+1;
-		int h = heuristic(xPrev, yPrev);
-		
-		Node backNode = new Node(currNode, xPrev, yPrev, ghost, cost, h);
-		this.pq.add(backNode);
-		this.maze[xPrev][yPrev] = h+cost;
-		this.maze[xCurr][yCurr] = PATH; // allow higher cost nodes to move into this position
-		this.expands += 1;
+		int h = heuristic(x,y);
+		if (this.maze[x][y] != WALL) {
+			this.pq.add(new Node(currNode, x, y, ghost, cost, h));
+			this.maze[x][y] = h+cost;
+			this.expands += 1;
+		}
 	}
+	
+	
+//	/**
+//	 * Allow Pacman to move back to its previous position to stall time until the ghost passes
+//	 * @param currNode
+//	 * @param ghost
+//	 */
+//	private void moveBack(Node currNode, Ghost ghost) {
+//		int xCurr = currNode.getX();
+//		int yCurr = currNode.getY();
+//		int xPrev, yPrev;
+//		if(currNode.getBackMove() == null) {
+//			xPrev = currNode.getParent().getX();
+//			yPrev = currNode.getParent().getY();
+//		} else {
+//			xPrev = currNode.getBackMove().getX();
+//			yPrev = currNode.getBackMove().getY();	
+//		}
+//		
+//		int cost = currNode.getCurrentPathCost()+1;
+//		int h = heuristic(xPrev, yPrev);
+//		
+//		Node backNode = new Node(currNode, xPrev, yPrev, ghost, cost, h);
+//		if(currNode.getBackMove() == null) {
+//			backNode.setBackMove(currNode.getParent().getParent());
+//		} else {
+//			backNode.setBackMove(currNode.getBackMove().getParent());
+//		}
+//		this.pq.add(backNode);
+//		this.maze[xPrev][yPrev] = h+cost;
+//		this.maze[xCurr][yCurr] = PATH; // allow higher cost nodes to move into this position
+//		this.expands += 1;
+//	}
 
 }

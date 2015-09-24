@@ -6,7 +6,6 @@ public class Node implements Comparable<Node> {
     private int x, y, currentPathCost, heuristic, totalCost, xG, yG;
     private Integer prevMove;
     private Ghost ghost;
-    private Boolean stall;
     private Integer direction;
 
     //============================================================================
@@ -52,7 +51,6 @@ public class Node implements Comparable<Node> {
     	this.totalCost = cost + h;
         this.prevMove = null;
         this.ghost = ghost;
-        this.stall = false;
     }
     
     //============================================================================
@@ -90,9 +88,6 @@ public class Node implements Comparable<Node> {
     	return this.ghost;
     }
     
-    public Boolean getStall() {
-    	return this.stall;
-    }
     
     //============================================================================
     // Setters
@@ -113,16 +108,12 @@ public class Node implements Comparable<Node> {
     public void setParent(Node parent){
         this.parent = parent;
     }  
-    
-    public void setStall(Boolean stall){
-    	this.stall = stall;
-    }
-    
-    	public Integer getDirection(){
+
+        
+	public Integer getDirection(){
         return this.direction;
     }
     
-
 
 	@Override
 	public int compareTo(Node o) {

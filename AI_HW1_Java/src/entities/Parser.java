@@ -40,7 +40,8 @@ public class Parser {
 			}
 		} catch (FileNotFoundException e) {
 			try {
-				s = new Scanner(new BufferedReader(new FileReader(url.getPath())));
+//				s = new Scanner(new BufferedReader(new FileReader(url.getPath())));
+				s = new Scanner(new BufferedReader(new FileReader(filename)));
 				while (s.hasNextLine()) {
 					maze.add(parseString(s.nextLine()));
 				}

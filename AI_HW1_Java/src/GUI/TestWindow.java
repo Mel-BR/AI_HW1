@@ -20,7 +20,8 @@ public class TestWindow implements Runnable {
 
 	public TestWindow(){
 		
-		ArrayList<ArrayList<Integer>> maze = Parser.parse("mediumGhost.txt");
+//		ArrayList<ArrayList<Integer>> maze = Parser.parse("mediumGhost.txt");
+		ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/complicatedGhostPathMaze.txt");
 		int[][] matrix = Parser.getMatrix(maze);
 		int[][] matrixClean = Parser.getMatrix(maze);
         AStarSearch2 pacman = new PacMan(matrix);
