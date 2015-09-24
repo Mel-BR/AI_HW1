@@ -3,6 +3,7 @@ import entities.Pair;
 import static entities.Parser.GPATH;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * 
@@ -42,21 +43,21 @@ public class Ghost {
 		if (maze[x][y+1] == GPATH) moves.add(new Pair<Integer, Integer> (x, y+1));
 		
 		// move the ghost a location other than its previous position.
-		Pair<Integer, Integer> move = null;
+		ArrayList<Pair<Integer, Integer>> frontMoves = new ArrayList<Pair<Integer,Integer>>();
 		for (Pair<Integer, Integer> m : moves) {
 			if (!m.equal(this.prevPos)) {
-				move = m;
+				frontMoves.add(m);
 			}
 		}
 		
 		// if no moves found, ghost needs to turn back, otherwise move the last available position in the list
-		if (move == null) {
+		if (frontMoves.size() == 0) {
 			Pair<Integer, Integer> temp = currPos;
 			this.currPos = this.prevPos;
 			this.prevPos = temp;
 		} else {
 			this.prevPos = this.currPos;
-			this.currPos = move;
+			this.currPos = frontMoves.get(new Random().nextInt(frontMoves.size()));
 		}
 		
 	}
