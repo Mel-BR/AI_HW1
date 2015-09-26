@@ -148,12 +148,12 @@ public class Parser {
 	 */
         public static int[][] getMatrix(ArrayList<ArrayList<Integer>> integers)
         {
-            int[][] ret = new int[integers.get(0).size()][integers.size()];
+            int[][] ret = new int[integers.size()][integers.get(0).size()];
             for (int i=0; i < ret.length; i++)
             {            
                 for (int j=0; j < ret[0].length; j++)
                 {
-                    ret[i][j] = integers.get(j).get(i).intValue();
+                    ret[i][j] = integers.get(i).get(j).intValue();
                 }
             }
             return ret;
