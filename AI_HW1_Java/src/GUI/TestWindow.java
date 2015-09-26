@@ -20,8 +20,8 @@ public class TestWindow implements Runnable {
 
 	public TestWindow(){
 		
-		ArrayList<ArrayList<Integer>> maze = Parser.parse("bigGhost.txt");
-//		ArrayList<ArrayList<Integer>> maze = Parser.parse("complicatedGhostPathMaze.txt");
+//		ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/bigGhost.txt");
+		ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/complicatedGhostPathMaze.txt");
 		int[][] matrix = Parser.getMatrix(maze);
 		int[][] matrixClean = Parser.getMatrix(maze);
         AStarSearch2 pacman = new PacMan(matrix);
@@ -30,12 +30,13 @@ public class TestWindow implements Runnable {
         Node currNode = pacman.getSolNode();
         Stack<int[]> objectPath = new Stack<int[]>();
 
+        //WARNING SOMETHINGS UP WITH XY COORDS...
         while(currNode.getParent()!=null){
         	int[] pos = new int[4];
-        	pos[0] = currNode.getX();
-        	pos[1] = currNode.getY();
-        	pos[2] = currNode.getGhost().getCurrPos().a;
-        	pos[3] = currNode.getGhost().getCurrPos().b;
+        	pos[0] = currNode.getY();
+        	pos[1] = currNode.getX();
+        	pos[2] = currNode.getGhost().getCurrPos().b;
+        	pos[3] = currNode.getGhost().getCurrPos().a;
         	objectPath.push(pos);
         	currNode = currNode.getParent();
         	

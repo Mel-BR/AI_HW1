@@ -25,6 +25,8 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JPanel;
 
+import entities.Parser;
+
 public class pacPanel extends JPanel{
 
     /**
@@ -77,8 +79,8 @@ public class pacPanel extends JPanel{
     	this.testWindow = testWindow;
     	this.objectPath = objectPath;
     	this.currMaze = currMaze;
-    	int width = (this.currMaze.length+1)*imageSize;
-    	int height = (this.currMaze[0].length+2)*imageSize;
+    	int width = (this.currMaze[0].length+1)*imageSize;
+    	int height = (this.currMaze.length+2)*imageSize;
     	windowSize = new Dimension();
     	this.windowSize.setSize(width,height);
     	
@@ -89,9 +91,10 @@ public class pacPanel extends JPanel{
     	this.newObjectPos[2] = this.startPosGhost[0];
     	this.newObjectPos[3] = this.startPosGhost[1];
 
-    	this.currMaze[this.startPosGhost[0]][this.startPosGhost[1]] = GPATH;
+    	this.currMaze[this.startPosGhost[1]][this.startPosGhost[0]] = GPATH;
     	
-
+    	Parser.displayBeautifulMatrix(currMaze);
+    	Parser.displayRawMatrix(currMaze);
     	
        try {          
 			wall = ImageIO.read(this.getClass().getResource("wall.png")).getScaledInstance(imageSize, imageSize, Image.SCALE_SMOOTH);
@@ -159,7 +162,7 @@ public class pacPanel extends JPanel{
     	if (tileTicks>=ticksPerTile){
     		
 			tileTicks = 0;
-	    	this.currMaze[this.newObjectPos[0]][this.newObjectPos[1]] = START;
+	    	this.currMaze[this.newObjectPos[1]][this.newObjectPos[0]] = START;
 	    	oldObjectPos[0] = newObjectPos[0];
 	    	oldObjectPos[1] = newObjectPos[1];
 	    	oldObjectPos[2] = newObjectPos[2];
@@ -226,8 +229,8 @@ public class pacPanel extends JPanel{
 			for (int ii = 0; ii < cols; ii++) {
 				
 				if (currMaze[i][ii] == target){
-					targetCoords[0]=i;
-					targetCoords[1]=ii;
+					targetCoords[1]=i;
+					targetCoords[0]=ii;
 					return targetCoords;
 				}
 				
@@ -265,18 +268,18 @@ public class pacPanel extends JPanel{
 			for (int j = 0; j < currMaze[i].length; j++){
 				int value = currMaze[i][j];
 				if (value==WALL){
-			        g.drawImage(wall, i*imageSize, j*imageSize, null);
+			        g.drawImage(wall, j*imageSize, i*imageSize, null);
 				}else if(value==FIN){
-					g.drawImage(goal, i*imageSize, j*imageSize, null);
+					g.drawImage(goal, j*imageSize, i*imageSize, null);
 				}
 				else if(value==START){
-					g.drawImage(start, i*imageSize, j*imageSize, null);
+					g.drawImage(start, j*imageSize, i*imageSize, null);
 				}
 				else if(value==GHOST){
-					g.drawImage(path, i*imageSize, j*imageSize, null);
+					g.drawImage(path, j*imageSize, i*imageSize, null);
 				}
 				else{
-					g.drawImage(floor, i*imageSize, j*imageSize, null);
+					g.drawImage(floor, j*imageSize, i*imageSize, null);
 					//System.out.printf("Unknown ID number for image tile:%d\n",value);
 				}
 				
