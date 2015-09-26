@@ -40,8 +40,8 @@ public class Parser {
 			}
 		} catch (FileNotFoundException e) {
 			try {
-//				s = new Scanner(new BufferedReader(new FileReader(url.getPath())));
-				s = new Scanner(new BufferedReader(new FileReader(filename)));
+				s = new Scanner(new BufferedReader(new FileReader(url.getPath())));
+//				s = new Scanner(new BufferedReader(new FileReader(filename)));
 				while (s.hasNextLine()) {
 					maze.add(parseString(s.nextLine()));
 				}
@@ -139,12 +139,12 @@ public class Parser {
 	 */
         public static int[][] getMatrix(ArrayList<ArrayList<Integer>> integers)
         {
-            int[][] ret = new int[integers.size()][integers.get(0).size()];
+            int[][] ret = new int[integers.get(0).size()][integers.size()];
             for (int i=0; i < ret.length; i++)
             {            
                 for (int j=0; j < ret[0].length; j++)
                 {
-                    ret[i][j] = integers.get(i).get(j).intValue();
+                    ret[i][j] = integers.get(j).get(i).intValue();
                 }
             }
             return ret;
