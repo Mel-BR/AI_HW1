@@ -51,7 +51,7 @@ public class DFSSearch {
             {
                 if (this.maze[i][j]  == START)
                 {
-                    addNodeToExpandedSet(null,i,j);
+                    this.lifo.add(new Node(null,i,j,0,0));
                 }
             }
         }
@@ -66,7 +66,9 @@ public class DFSSearch {
             Node currentNode = lifo.removeLast();
             int x = currentNode.getX();
             int y = currentNode.getY();
-            if (maze[currentNode.getX()][currentNode.getY()] == FIN) {
+            this.expandedNodes[x][y]=1;
+            this.expandedNodesCounts++;
+            if (solution[currentNode.getX()][currentNode.getY()] == FIN) {
                 markSolution(currentNode);
                 break;
             }
@@ -119,7 +121,7 @@ public class DFSSearch {
      * @param coord
      * @return boolean
      */    
-    private boolean alreadyExplored(int x, int y){
+    private boolean alreadyExpanded(int x, int y){
         
         if(this.expandedNodes[x][y] == 1) {
             return true;
@@ -133,25 +135,27 @@ public class DFSSearch {
      * @return void
      */
     private void checkAndAddNodeToList(Node currentNode, int x, int y){
-        if( this.maze[x][y] != WALL )
+        if(!alreadyExpanded(x,y))
         {
-            if(!alreadyExplored(x,y))
-            {
-               addNodeToExpandedSet(currentNode,x,y);
-            }   
+            int cost = currentNode.getCurrentPathCost()+1;
+            int h = 0;
+            if (cost < this.maze[x][y]) {
+                Node oldNode = getNodeInQueue(x, y);
+                this.lifo.remove(oldNode);
+                this.lifo.add(new Node(currentNode,x,y,cost,h));
+                this.maze[x][y] = cost;
+            }
         }
+        
     }
     
-    
-     /**
-     * add node to the lifo
-     * @param currentNode
-     * @param x
-     * @param y
-     */
-    private void addNodeToExpandedSet(Node currentNode,int x,int y){
-        lifo.add(new Node(currentNode,x,y));
-        this.expandedNodes[x][y]=1;
-        this.expandedNodesCounts++;
+    private Node getNodeInQueue(int x, int y){
+        for (Node node : this.lifo) {
+            if (x == node.getX() && y == node.getY()){
+                return node;
+            }
+        }
+        return null;
     }
+    
 }
