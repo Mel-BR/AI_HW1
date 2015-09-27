@@ -52,7 +52,7 @@ public class pacPanel extends JPanel{
 
 	
 	private int[] startPos;
-	private int imageSize = 10;
+	private int imageSize = 18;
 	private int[][] currMaze;
 	public Dimension windowSize;
 
@@ -82,7 +82,7 @@ public class pacPanel extends JPanel{
     	int width = (this.currMaze[0].length+1)*imageSize;
     	int height = (this.currMaze.length+2)*imageSize;
     	windowSize = new Dimension();
-    	this.windowSize.setSize(width,height);
+    	this.windowSize.setSize(width+5,height+20);
     	
     	this.startPos = findInMaze(START);
     	this.newObjectPos[0] = this.startPos[0];
@@ -93,8 +93,8 @@ public class pacPanel extends JPanel{
 
     	this.currMaze[this.startPosGhost[1]][this.startPosGhost[0]] = GPATH;
     	
-    	Parser.displayBeautifulMatrix(currMaze);
-    	Parser.displayRawMatrix(currMaze);
+    	//Parser.displayBeautifulMatrix(currMaze);
+    	//Parser.displayRawMatrix(currMaze);
     	
        try {          
 			wall = ImageIO.read(this.getClass().getResource("wall.png")).getScaledInstance(imageSize, imageSize, Image.SCALE_SMOOTH);
