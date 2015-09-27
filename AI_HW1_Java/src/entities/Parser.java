@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -29,7 +31,7 @@ public class Parser {
 	public static ArrayList<ArrayList<Integer>> parse(String filename) {
 		
 		ArrayList<ArrayList<Integer>> maze = new ArrayList<ArrayList<Integer>>();
-		URL url = Parser.class.getClassLoader().getResource(filename);
+
 		
 		Scanner s = null;
 		
@@ -40,8 +42,15 @@ public class Parser {
 			}
 		} catch (FileNotFoundException e) {
 			try {
+				
+				Path pathAbsolute = Paths.get(filename);
+		        Path pathBase = Paths.get("src/input");
+		        Path pathRelative = pathBase.relativize(pathAbsolute);
+				
+					
+				URL url = Parser.class.getClassLoader().getResource(pathRelative.toString());
+				
 				s = new Scanner(new BufferedReader(new FileReader(url.getPath())));
-//				s = new Scanner(new BufferedReader(new FileReader(filename)));
 				while (s.hasNextLine()) {
 					maze.add(parseString(s.nextLine()));
 				}

@@ -28,6 +28,7 @@ public class AStarSearch {
         this.solCost = 0;
         
         this.solution = new int[this.maze.length][this.maze[0].length];
+        this.expandedNodes = new int[maze.length][maze[0].length];
         
         for(int i = 0; i < maze.length; i++)
             for (int j = 0; j < maze[i].length; j++)
@@ -44,7 +45,7 @@ public class AStarSearch {
      */    
     private void findStartFin() {
         this.pq.clear();
-        this.expandedNodes = new int[maze.length][maze[0].length];
+        
 
         //findind start and goal node
         for(int i = 0 ; i < this.maze.length ; i++)
@@ -56,7 +57,6 @@ public class AStarSearch {
                     int h = heuristic(i, j);
                     int cost = 0;
                     this.pq.add(new Node(null, i, j, cost, h));
-                    this.expandedNodesCounts++;
                 }
                 else if (this.maze[i][j]  == FIN)
                 {
@@ -76,6 +76,8 @@ public class AStarSearch {
             Node currentNode = pq.remove();
             int x = currentNode.getX();
             int y = currentNode.getY();
+            this.expandedNodes[x][y]=1;
+            this.expandedNodesCounts++;
             if (this.solution[currentNode.getX()][currentNode.getY()] == FIN) {
                 markSolution(currentNode);
                 break;
@@ -120,6 +122,25 @@ public class AStarSearch {
         System.out.println("\n Nodes expanded : "+ this.expandedNodesCounts);
     }
        
+    
+    
+    
+
+     /**
+     * check if a node has already been visited
+     * @param node 
+     * @param coord
+     * @return boolean
+     */    
+    private boolean alreadyExpanded(int x, int y){
+        
+        if(this.expandedNodes[x][y] == 1) {
+            return true;
+        }
+        return false;
+    }
+    
+    
      /**
      * Add node to list if not already visited, update them if necessary and if already visited
      * @param currentNode
@@ -128,23 +149,18 @@ public class AStarSearch {
      */
     private void checkAndAddNodeToList(Node currNode, int x, int y)
     {
-        int cost = currNode.getCurrentPathCost()+1;
-        int h = heuristic(x,y);
-        if (h+cost < this.maze[x][y]) {
-                Node n = existNode(x,y);
-                //node already expanded, need to change totalCost value
-                if (n!=null){ 
-                    n.setCurrentTotalCost(h+cost);
-                    n.setParent(currNode);
-                }
-                else{ // node not already expanded
-                    this.expandedNodesCounts++;
-                    this.pq.add(new Node(currNode, x, y, cost, h));
-                }
-                
-
-                this.maze[x][y] = h+cost;
+        if(!alreadyExpanded(x,y))
+        {
+            int cost = currNode.getCurrentPathCost()+1;
+            int h = heuristic(x,y);
+            if (h+cost < this.maze[x][y]) {
+                    Node oldNode = getNodeInQueue(x,y);
+                    this.pq.remove(oldNode);
+                    this.pq.add(new Node(currNode,x,y,cost,h));
+                    this.maze[x][y] = h+cost;
+            }
         }
+        
   
     }
 
@@ -161,14 +177,14 @@ public class AStarSearch {
     
     
      /**
-     * check if a node is already in the priority queue
+     * get node in priority queue
      * @param x
      * @param y
-     * @return true if already exists, false otherwise
+     * @return node if exists, null otherwise
      */
-    private Node existNode(int x, int y){
+    private Node getNodeInQueue(int x, int y){
         for (Node node : this.pq) {
-            if (x == node.getX() && y == node.getY() ){
+            if (x == node.getX() && y == node.getY()){
                 return node;
             }
         }

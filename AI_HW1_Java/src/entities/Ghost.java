@@ -45,9 +45,8 @@ public class Ghost {
 		// move the ghost a location other than its previous position.
 		ArrayList<Pair<Integer, Integer>> frontMoves = new ArrayList<Pair<Integer,Integer>>();
 		for (Pair<Integer, Integer> m : moves) {
-			if (!m.equal(this.prevPos)) {
+			if (!m.equal(this.prevPos))
 				frontMoves.add(m);
-			}
 		}
 		
 		// if no moves found, ghost needs to turn back, otherwise move the last available position in the list
