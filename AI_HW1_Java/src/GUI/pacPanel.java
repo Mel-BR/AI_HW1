@@ -50,7 +50,7 @@ public class pacPanel extends JPanel{
 
 	
 	private int[] startPos;
-	private int imageSize = 25;
+	private int imageSize = 10;
 	private int[][] currMaze;
 	public Dimension windowSize;
 

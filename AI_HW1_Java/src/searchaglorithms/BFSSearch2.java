@@ -110,6 +110,7 @@ public class BFSSearch2 {
 		Node currNode = this.pq.remove();
 		// found solution if current node is the on FIN
 		if (this.solution[currNode.getX()][currNode.getY()] == FIN) {
+			this.expands -= this.pq.size();
 			return currNode;
 		}
 		exploreMoves(currNode);

@@ -73,8 +73,8 @@ public class PacMan extends AStarSearch2 {
 		Boolean dead = (ghost.getPrevPos().equal(x, y) && 
 				ghost.getCurrPos().equal(currNode.getX(), currNode.getY())) ||
 				ghost.getCurrPos().equal(x, y);
+		// try running away to stall time for ghost to pass.
 		if (dead) {
-			//moveBack(currNode, ghost);
 			int xCurr = currNode.getX();
 			int yCurr = currNode.getY();
 			maze[xCurr][yCurr] = PATH;
@@ -95,15 +95,14 @@ public class PacMan extends AStarSearch2 {
 		}
 	}
 	
-	@Override
-	protected void debugSolution(Node solNode) {
-//		Ghost ghost = solNode.getGhost();
-//		printSolution();
-//		this.solution[ghost.getCurrPos().a][ghost.getCurrPos().b] = GHOST;
-//		this.solution[ghost.getPrevPos().a][ghost.getPrevPos().b] = GPATH;
-	}
-	
-	
+	/**
+	 * If pacman tries to move to a postion that kills him, he should try to run away for now and maybe come back later.
+	 * To allow pacman to come back to the same position, the cost at the current position is set to PATH (equivalent to unexplored position).
+	 * @param currNode
+	 * @param ghost
+	 * @param x
+	 * @param y
+	 */
 	private void runAway(Node currNode, Ghost ghost, int x, int y) {
 		int cost = currNode.getCurrentPathCost()+1;
 		int h = heuristic(x,y);
@@ -115,36 +114,11 @@ public class PacMan extends AStarSearch2 {
 	}
 	
 	
-//	/**
-//	 * Allow Pacman to move back to its previous position to stall time until the ghost passes
-//	 * @param currNode
-//	 * @param ghost
-//	 */
-//	private void moveBack(Node currNode, Ghost ghost) {
-//		int xCurr = currNode.getX();
-//		int yCurr = currNode.getY();
-//		int xPrev, yPrev;
-//		if(currNode.getBackMove() == null) {
-//			xPrev = currNode.getParent().getX();
-//			yPrev = currNode.getParent().getY();
-//		} else {
-//			xPrev = currNode.getBackMove().getX();
-//			yPrev = currNode.getBackMove().getY();	
-//		}
-//		
-//		int cost = currNode.getCurrentPathCost()+1;
-//		int h = heuristic(xPrev, yPrev);
-//		
-//		Node backNode = new Node(currNode, xPrev, yPrev, ghost, cost, h);
-//		if(currNode.getBackMove() == null) {
-//			backNode.setBackMove(currNode.getParent().getParent());
-//		} else {
-//			backNode.setBackMove(currNode.getBackMove().getParent());
-//		}
-//		this.pq.add(backNode);
-//		this.maze[xPrev][yPrev] = h+cost;
-//		this.maze[xCurr][yCurr] = PATH; // allow higher cost nodes to move into this position
-//		this.expands += 1;
-//	}
-
+	@Override
+	protected void debugSolution(Node solNode) {
+//		Ghost ghost = solNode.getGhost();
+//		printSolution();
+//		this.solution[ghost.getCurrPos().a][ghost.getCurrPos().b] = GHOST;
+//		this.solution[ghost.getPrevPos().a][ghost.getPrevPos().b] = GPATH;
+	}
 }
