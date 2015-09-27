@@ -1,5 +1,7 @@
 package searchaglorithms;
 
+import java.util.PriorityQueue;
+
 import entities.Node;
 
 /**
@@ -12,6 +14,7 @@ public class AStarSearch2 extends BFSSearch2 {
 	public AStarSearch2(int[][] maze) {
 		super(maze);
 		// TODO Auto-generated constructor stub
+		this.pq = new PriorityQueue<Node>();
 	}
 	
 	/**

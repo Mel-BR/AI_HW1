@@ -2,11 +2,10 @@ package searchaglorithms;
 
 import static entities.Parser.FIN;
 import static entities.Parser.START;
-import static entities.Parser.GHOST;
-import static entities.Parser.PATH;
-import java.util.PriorityQueue;
 
-import entities.Ghost;
+import java.util.LinkedList;
+import java.util.Queue;
+
 import entities.Node;
 import entities.Parser;
 
@@ -18,7 +17,7 @@ import entities.Parser;
 public class BFSSearch2 {
 	protected int[][] maze;
 	protected int[][] solution;
-	protected PriorityQueue<Node> pq;
+	protected Queue<Node> pq;
 	protected int finX;
 	protected int finY;
 	protected int totalCost;
@@ -31,13 +30,11 @@ public class BFSSearch2 {
 		this.totalCost = 0;
 		this.expands = 0;
 		this.solution = new int[maze.length][maze[0].length];
-		this.pq = new PriorityQueue<Node>();
+		this.pq = new LinkedList<Node>();
 		
 		for(int i = 0; i < maze.length; i++)
 			for (int j = 0; j < maze[i].length; j++)
 				this.solution[i][j] = this.maze[i][j];
-		
-		findStartFin();
 	}
 
 	/**
@@ -75,6 +72,7 @@ public class BFSSearch2 {
 	 * execute algorithm and create the solution maze matrix
 	 */
 	public void search() {
+		findStartFin();
 		this.totalCost = 0;
 		this.expands = 0;
 		Node solNode = mazeSearch();

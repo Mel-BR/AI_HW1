@@ -19,7 +19,7 @@ public class MazeSearch {
         /* Parsing input */
 		
 		//Classic search		
-		ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/bigMaze.txt");
+		ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/openMaze.txt");
                 int[][] matrix = Parser.getMatrix(maze);
                 
         //Animated search
@@ -49,7 +49,7 @@ public class MazeSearch {
         greedySearch.search();
         greedySearch.printSolution();*/
       
-        BFSSearch2 pacman = new GreedySearch2(matrix);
+        BFSSearch2 pacman = new BFSSearch2(matrix);
         pacman.search();
         pacman.printSolution();
         
