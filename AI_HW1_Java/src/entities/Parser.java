@@ -88,9 +88,9 @@ public class Parser {
 				else if (label == PATH)
 					ch = ' ';
 				else if (label == START)
-					ch = '.';
-				else if (label == FIN)
 					ch = 'P';
+				else if (label == FIN)
+					ch = '.';
 				else if (label == GHOST)
 					ch = 'G';
 				else
@@ -119,10 +119,10 @@ public class Parser {
 			case ' ':
 				label = PATH;
 				break;
-			case '.':
+			case 'P':
 				label = START;
 				break;
-			case 'P':
+			case '.':
 				label = FIN;
 				break;
 			case 'G':
@@ -192,11 +192,9 @@ public class Parser {
                     else if (m[i][j]  == PATH)
                         ch = ' ';
                     else if (m[i][j]  == START)
-                        ch = '.';
-                    else if (m[i][j]  == FIN)
                         ch = 'P';
-    				else if (m[i][j] == GHOST)
-    					ch = 'G';
+                    else if (m[i][j]  == FIN)
+                        ch = '.';
                     else
                         ch = ' ';
                     mazeString += ch;

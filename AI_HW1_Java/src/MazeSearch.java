@@ -12,17 +12,20 @@ public class MazeSearch {
         /* Parsing input */
 
         /* Available files*/
-        ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/mediumMaze.txt");		
-        //ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/bigMaze.txt");		
-        //ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/openMaze.txt");		
+//        ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/mediumMaze.txt");		
+//        ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/bigMaze.txt");		
+//        ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/openMaze.txt");		
         //ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/smallTurns.txt");		
-        //ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/bigTurns.txt");
+        ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/bigTurns.txt");
             
         
         //Classic search
         int[][] matrix = Parser.getMatrix(maze);
                 
         //Animated search
+//        ArrayList<ArrayList<Integer>> pacMaze = Parser.parse("src/input/smallGhost.txt"); 
+//        ArrayList<ArrayList<Integer>> pacMaze = Parser.parse("src/input/mediumGhost.txt"); 
+//        ArrayList<ArrayList<Integer>> pacMaze = Parser.parse("src/input/bigGhost.txt"); 
         ArrayList<ArrayList<Integer>> pacMaze = Parser.parse("src/input/complicatedGhostPathMaze.txt"); 
         int[][] pacMat = Parser.getMatrix(pacMaze);
 
@@ -46,26 +49,30 @@ public class MazeSearch {
         bfsSearch.search();*/             
         
         //Greedy Search
-        /*BFSSearch2 greedySearch = new GreedySearch(matrix);
+        /*BFSSearch2 greedySearch = new GreedySearch2(matrix);
         greedySearch.search();
         greedySearch.printSolution();*/
 
-        
         //A* Search
         /*AStarSearch aStarSearch = new AStarSearch(matrix);
         aStarSearch.Search();
+        aStarSearch.printSolution();*/
+        
+        //A* Search (alternative)
+        /*BFSSearch2 aStarSearch = new AStarSearch2(matrix);
+        aStarSearch.search();
         aStarSearch.printSolution();*/
              
                 
         //PART 1.2
 		//A* Search penalizing turns
-		/*int forwardCost = 2;
+		int forwardCost = 2;
 		int turnCost = 1;
 		String typeHeuristic = "New"; 
 		// can be either "MD" or "New"
 		AStarSearchPenalizingTurnsMD aStarPenalizingTurnsMD = new AStarSearchPenalizingTurnsMD(matrix, turnCost,forwardCost,typeHeuristic);
 		aStarPenalizingTurnsMD.Search();
-		aStarPenalizingTurnsMD.printSolution();*/
+		aStarPenalizingTurnsMD.printSolution();
                 
         //PART 1.3
         // To run the animation, run TestWindow with the desired maze in TestWindow.java

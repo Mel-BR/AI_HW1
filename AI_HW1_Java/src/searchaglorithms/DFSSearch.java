@@ -94,8 +94,8 @@ public class DFSSearch {
      * @param Node
      */
     public void markSolution(Node currentNode){
-        while (currentNode!=null){
-            this.solution[currentNode.getX()][currentNode.getY()]=START;
+        while (currentNode.getParent()!=null){
+            this.solution[currentNode.getX()][currentNode.getY()]=FIN;
             this.solCost++;
             currentNode = currentNode.getParent();
         }

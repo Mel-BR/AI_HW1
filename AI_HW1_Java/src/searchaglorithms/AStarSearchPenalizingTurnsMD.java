@@ -144,8 +144,8 @@ public class AStarSearchPenalizingTurnsMD {
      */
     public void markSolution(Node currentNode){
         Node parent = null;
-        while (currentNode!=null){
-            this.solution[currentNode.getX()][currentNode.getY()]=START;
+        while (currentNode.getParent()!=null){
+            this.solution[currentNode.getX()][currentNode.getY()]=FIN;
             parent = currentNode.getParent();
             if (parent!=null){
                 if(parent.getDirection().intValue() == currentNode.getDirection().intValue())

@@ -4,6 +4,7 @@ import static entities.Parser.FIN;
 import static entities.Parser.START;
 
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Queue;
 
 import entities.Node;
@@ -30,7 +31,7 @@ public class BFSSearch2 {
 		this.totalCost = 0;
 		this.expands = 0;
 		this.solution = new int[maze.length][maze[0].length];
-		this.pq = new LinkedList<Node>();
+		this.pq = new PriorityQueue<Node>();
 		
 		for(int i = 0; i < maze.length; i++)
 			for (int j = 0; j < maze[i].length; j++)
@@ -81,7 +82,7 @@ public class BFSSearch2 {
 		while (solNode.getParent() != null) {
 			int x = solNode.getX();
 			int y = solNode.getY();
-			this.solution[x][y] = START; // MARK THE SOLUTION PATH WITH THE START SYMBOL			
+			this.solution[x][y] = FIN; // MARK THE SOLUTION PATH WITH THE START SYMBOL			
 			solNode = solNode.getParent();
 			this.totalCost++;
 			debugSolution(solNode);
@@ -142,8 +143,8 @@ public class BFSSearch2 {
 	 * @param y
 	 */
 	protected void checkAndAddNodeToList(Node currNode, int x, int y) {
-		int cost = currNode.getCurrentPathCost()+1;
-		int h = 0; //heuristic(x,y);
+		int cost = 0; //currNode.getCurrentPathCost()+1;
+		int h = heuristic(x,y);
 		if (h+cost < this.maze[x][y]) {
 			this.pq.add(new Node(currNode, x, y, cost, h));
 			this.maze[x][y] = h+cost;
