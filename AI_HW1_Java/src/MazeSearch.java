@@ -1,13 +1,6 @@
 import java.util.ArrayList;
-import searchaglorithms.AStarSearch2;
-import searchaglorithms.BFSSearch2;
-import searchaglorithms.PacMan;
-import entities.Parser;
-import searchaglorithms.AStarSearch;
-import searchaglorithms.BFSSearch;
-import searchaglorithms.AStarSearchPenalizingTurns;
-import searchaglorithms.DFSSearch;
-import searchaglorithms.GreedySearch2;
+
+import searchaglorithms.*;
 import entities.Parser;
 
 
@@ -45,13 +38,10 @@ public class MazeSearch {
         
         
         //Greedy Search
-        /*BFSSearch2 greedySearch = new AStarSearch2(matrix);
+        /*BFSSearch2 greedySearch = new GreedySearch(matrix);
         greedySearch.search();
         greedySearch.printSolution();*/
       
-        BFSSearch2 pacman = new BFSSearch2(matrix);
-        pacman.search();
-        pacman.printSolution();
         
         //A* Search
         /*AStarSearch aStarSearch = new AStarSearch(matrix);
@@ -64,6 +54,11 @@ public class MazeSearch {
         /*AStarSearchPenalizingTurns aStarPenalizingTurns = new AStarSearchPenalizingTurns(matrix);
         aStarPenalizingTurns.Search();
         aStarPenalizingTurns.printSolution();*/
-
+                
+        //PART 1.3
+        // To run the animation, run TestWindow with the desired maze in TestWindow.java
+        /*AStarSearch2 pacMan = new PacMan(pacMat);
+        pacMan.search();
+        pacMan.printSolution();*/
 	}
 }

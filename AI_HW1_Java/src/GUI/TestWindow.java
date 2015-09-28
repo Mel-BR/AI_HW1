@@ -20,7 +20,6 @@ public class TestWindow implements Runnable {
 
 	public TestWindow(){
 		
-//		ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/bigGhost.txt");
 		ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/complicatedGhostPathMaze.txt");
 		int[][] matrix = Parser.getMatrix(maze);
 		int[][] matrixClean = Parser.getMatrix(maze);
@@ -30,7 +29,6 @@ public class TestWindow implements Runnable {
         Node currNode = pacman.getSolNode();
         Stack<int[]> objectPath = new Stack<int[]>();
 
-        //WARNING SOMETHINGS UP WITH XY COORDS...
         while(currNode.getParent()!=null){
         	int[] pos = new int[4];
         	pos[0] = currNode.getY();
