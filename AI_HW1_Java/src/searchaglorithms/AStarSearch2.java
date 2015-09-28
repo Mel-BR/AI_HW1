@@ -30,6 +30,7 @@ public class AStarSearch2 extends BFSSearch2 {
 		if (h+cost < this.maze[x][y]) {
 			this.pq.add(new Node(currNode, x, y, cost, h));
 			this.maze[x][y] = h+cost;
+			this.expands++;
 			return true;
 		}
 		return false;

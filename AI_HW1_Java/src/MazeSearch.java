@@ -12,9 +12,9 @@ public class MazeSearch {
         /* Parsing input */
 
         /* Available files*/
-//        ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/mediumMaze.txt");		
-//        ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/bigMaze.txt");		
-        ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/openMaze.txt");		
+        ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/mediumMaze.txt");		
+//	      ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/bigMaze.txt");		
+//        ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/openMaze.txt");		
 //        ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/smallTurns.txt");		
 //        ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/bigTurns.txt");
             
@@ -24,9 +24,9 @@ public class MazeSearch {
                 
         //Animated search
 //        ArrayList<ArrayList<Integer>> pacMaze = Parser.parse("src/input/smallGhost.txt"); 
-//        ArrayList<ArrayList<Integer>> pacMaze = Parser.parse("src/input/mediumGhost.txt"); 
+        ArrayList<ArrayList<Integer>> pacMaze = Parser.parse("src/input/mediumGhost.txt"); 
 //        ArrayList<ArrayList<Integer>> pacMaze = Parser.parse("src/input/bigGhost.txt"); 
-        ArrayList<ArrayList<Integer>> pacMaze = Parser.parse("src/input/complicatedGhostPathMaze.txt"); 
+//        ArrayList<ArrayList<Integer>> pacMaze = Parser.parse("src/input/complicatedGhostPathMaze.txt"); 
         int[][] pacMat = Parser.getMatrix(pacMaze);
 
                 
@@ -54,7 +54,7 @@ public class MazeSearch {
         greedySearch.printSolution();*/
 
         //A* Search
-        AStarSearch aStarSearch = new AStarSearch(matrix);
+        AStarSearch aStarSearch = new AStarSearch(pacMat);
         aStarSearch.Search();
         aStarSearch.printSolution();
         

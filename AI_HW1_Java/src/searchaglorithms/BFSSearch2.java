@@ -31,7 +31,7 @@ public class BFSSearch2 {
 		this.totalCost = 0;
 		this.expands = 0;
 		this.solution = new int[maze.length][maze[0].length];
-		this.pq = new PriorityQueue<Node>();
+		this.pq = new LinkedList<Node>();
 		
 		for(int i = 0; i < maze.length; i++)
 			for (int j = 0; j < maze[i].length; j++)
@@ -54,7 +54,7 @@ public class BFSSearch2 {
 					this.pq.add(new Node(null, i, j, cost, h));
 				}
 				if (this.maze[i][j] == FIN) {
-					this.finX = j;
+					this.finX = i;
 					this.finY = j;
 				}
 			}
@@ -78,6 +78,7 @@ public class BFSSearch2 {
 		this.expands = 0;
 		Node solNode = mazeSearch();
 		this.solNode = solNode;
+		this.expands -= this.pq.size();
 		// backtrack from fin to start
 		while (solNode.getParent() != null) {
 			int x = solNode.getX();
@@ -109,7 +110,6 @@ public class BFSSearch2 {
 		Node currNode = this.pq.remove();
 		// found solution if current node is the on FIN
 		if (this.solution[currNode.getX()][currNode.getY()] == FIN) {
-			this.expands -= this.pq.size();
 			return currNode;
 		}
 		exploreMoves(currNode);
@@ -134,7 +134,6 @@ public class BFSSearch2 {
         boolean r = checkAndAddNodeToList(currNode, x+1,y);
         //Down
         boolean d = checkAndAddNodeToList(currNode, x,y+1);
-        if (l||u||r||d) this.expands++;
 	}
 
 	
@@ -145,11 +144,12 @@ public class BFSSearch2 {
 	 * @param y
 	 */
 	protected boolean checkAndAddNodeToList(Node currNode, int x, int y) {
-		int cost = 0; //currNode.getCurrentPathCost()+1;
-		int h = heuristic(x,y);
+		int cost = currNode.getCurrentPathCost()+1;
+		int h = 0; //heuristic(x,y);
 		if (h+cost < this.maze[x][y]) {
 			this.pq.add(new Node(currNode, x, y, cost, h));
 			this.maze[x][y] = h+cost;
+			this.expands++;
 			return true;
 		}
 		return false;
