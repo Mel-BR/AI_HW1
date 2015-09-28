@@ -26,8 +26,7 @@ public class AStarSearchPenalizingTurnsMD {
     private int[][][] expandedNodes;
     private int expandedNodesCounts;
     int solCost;
-    int xGoal;
-    int yGoal;
+    int xGoal, yGoal, xStart, yStart;
     
     String typeHeuristic;
     
@@ -79,6 +78,8 @@ public class AStarSearchPenalizingTurnsMD {
                     int h = heuristicMD(i, j,RIGHT);
                     int cost = 0;
                     this.pq.add(new Node(null, i, j, cost, h, RIGHT));
+                    this.xStart = i;
+                    this.yStart = j;
                 }
                 else if (this.maze[i][j]  == FIN)
                 {
@@ -155,6 +156,8 @@ public class AStarSearchPenalizingTurnsMD {
             }
             currentNode = parent;
         }
+        this.solution[xStart][yStart]=START;
+
     }
     
     /**
@@ -180,7 +183,11 @@ public class AStarSearchPenalizingTurnsMD {
         if(this.expandedNodes[x][y][direction] == 1) {
             return true;
         }
-        return false;
+        else{
+            return false;
+
+        }
+        
     }
     
     
@@ -216,9 +223,8 @@ public class AStarSearchPenalizingTurnsMD {
     private int heuristicMD(int x, int y, Integer direction){
         
         if(typeHeuristic == "MD"){
-            return FORWARDCOST*abs(this.xGoal-x)+FORWARDCOST*abs(this.yGoal-y);
-        }
-        
+            return abs(this.xGoal-x)+abs(this.yGoal-y);
+        }    
         
         else{
             if(x==xGoal && y==yGoal)

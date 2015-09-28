@@ -167,7 +167,7 @@ public class AStarSearch {
      * find the heuristic value for a given node
      * @param x
      * @param y
-     * @return manhattan distance between the node position x,y and the goal position
+     * @return Manhattan distance between the node position x,y and the goal position
      */
     private int heuristic(int x, int y){
         return abs(this.xGoal-x)+abs(this.yGoal-y);
