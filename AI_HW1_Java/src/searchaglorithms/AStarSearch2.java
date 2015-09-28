@@ -24,13 +24,14 @@ public class AStarSearch2 extends BFSSearch2 {
 	 * @param y
 	 */
 	@Override
-	protected void checkAndAddNodeToList(Node currNode, int x, int y) {
+	protected boolean checkAndAddNodeToList(Node currNode, int x, int y) {
 		int cost = currNode.getCurrentPathCost()+1;
 		int h = heuristic(x,y);
 		if (h+cost < this.maze[x][y]) {
 			this.pq.add(new Node(currNode, x, y, cost, h));
 			this.maze[x][y] = h+cost;
-			this.expands += 1;
+			return true;
 		}
+		return false;
 	}
 }

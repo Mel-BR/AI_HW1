@@ -125,14 +125,16 @@ public class BFSSearch2 {
 		int x = currNode.getX();
 		int y = currNode.getY();
         //Add all adjacent nodes that are not WALLS to the list
+		
         //Left
-        checkAndAddNodeToList(currNode, x-1,y);
+        boolean l = checkAndAddNodeToList(currNode, x-1,y);
         //Up
-        checkAndAddNodeToList(currNode, x,y-1);
+        boolean u = checkAndAddNodeToList(currNode, x,y-1);
         //Right
-        checkAndAddNodeToList(currNode, x+1,y);
+        boolean r = checkAndAddNodeToList(currNode, x+1,y);
         //Down
-        checkAndAddNodeToList(currNode, x,y+1);
+        boolean d = checkAndAddNodeToList(currNode, x,y+1);
+        if (l||u||r||d) this.expands++;
 	}
 
 	
@@ -142,14 +144,15 @@ public class BFSSearch2 {
 	 * @param x
 	 * @param y
 	 */
-	protected void checkAndAddNodeToList(Node currNode, int x, int y) {
+	protected boolean checkAndAddNodeToList(Node currNode, int x, int y) {
 		int cost = 0; //currNode.getCurrentPathCost()+1;
 		int h = heuristic(x,y);
 		if (h+cost < this.maze[x][y]) {
 			this.pq.add(new Node(currNode, x, y, cost, h));
 			this.maze[x][y] = h+cost;
-			this.expands += 1;
+			return true;
 		}
+		return false;
 	}
 
 	/**

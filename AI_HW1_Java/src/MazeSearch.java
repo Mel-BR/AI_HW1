@@ -14,9 +14,9 @@ public class MazeSearch {
         /* Available files*/
 //        ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/mediumMaze.txt");		
 //        ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/bigMaze.txt");		
-//        ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/openMaze.txt");		
-        //ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/smallTurns.txt");		
-        ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/bigTurns.txt");
+        ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/openMaze.txt");		
+//        ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/smallTurns.txt");		
+//        ArrayList<ArrayList<Integer>> maze = Parser.parse("src/input/bigTurns.txt");
             
         
         //Classic search
@@ -54,9 +54,9 @@ public class MazeSearch {
         greedySearch.printSolution();*/
 
         //A* Search
-        /*AStarSearch aStarSearch = new AStarSearch(matrix);
+        AStarSearch aStarSearch = new AStarSearch(matrix);
         aStarSearch.Search();
-        aStarSearch.printSolution();*/
+        aStarSearch.printSolution();
         
         //A* Search (alternative)
         /*BFSSearch2 aStarSearch = new AStarSearch2(matrix);
@@ -66,13 +66,13 @@ public class MazeSearch {
                 
         //PART 1.2
 		//A* Search penalizing turns
-		int forwardCost = 2;
+		/*int forwardCost = 2;
 		int turnCost = 1;
 		String typeHeuristic = "New"; 
 		// can be either "MD" or "New"
 		AStarSearchPenalizingTurnsMD aStarPenalizingTurnsMD = new AStarSearchPenalizingTurnsMD(matrix, turnCost,forwardCost,typeHeuristic);
 		aStarPenalizingTurnsMD.Search();
-		aStarPenalizingTurnsMD.printSolution();
+		aStarPenalizingTurnsMD.printSolution();*/
                 
         //PART 1.3
         // To run the animation, run TestWindow with the desired maze in TestWindow.java

@@ -65,7 +65,7 @@ public class PacMan extends AStarSearch2 {
 	 * @param y
 	 */
 	@Override
-	protected void checkAndAddNodeToList(Node currNode, int x, int y) {
+	protected boolean checkAndAddNodeToList(Node currNode, int x, int y) {
 		Ghost ghost = currNode.getGhost().copy();
 		// check if pacman got eaten by the ghost.
 		ghost.move(this.solution);
@@ -82,7 +82,7 @@ public class PacMan extends AStarSearch2 {
 			if (xCurr-1 != x || yCurr != y) runAway(currNode, ghost, xCurr-1, yCurr);
 			if (xCurr != x || yCurr+1 != y) runAway(currNode, ghost, xCurr, yCurr+1);
 			if (xCurr != x || yCurr-1 != y) runAway(currNode, ghost, xCurr, yCurr-1);
-			return;
+			return true;
 		}
 		
 		// add reachable states to queue
@@ -91,8 +91,9 @@ public class PacMan extends AStarSearch2 {
 		if (h+cost < this.maze[x][y]) {
 			this.pq.add(new Node(currNode, x, y, ghost, cost, h));
 			this.maze[x][y] = h+cost;
-			this.expands += 1;
+			return true;
 		}
+		return false;
 	}
 	
 	/**
@@ -109,7 +110,6 @@ public class PacMan extends AStarSearch2 {
 		if (this.maze[x][y] != WALL) {
 			this.pq.add(new Node(currNode, x, y, ghost, cost, h));
 			this.maze[x][y] = h+cost;
-			this.expands += 1;
 		}
 	}
 	
